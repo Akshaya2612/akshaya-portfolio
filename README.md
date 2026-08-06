@@ -1,15 +1,14 @@
 # Akshaya Portfolio
 
-A portfolio where the scoring system is the navigation. React + TypeScript + Vite.
+A portfolio about making complex systems legible. React + TypeScript + Vite.
 
 ## Edit content
-Everything lives in `src/data/content.ts`: copy, awards, posts, projects.
+Everything lives in `src/data/content.ts`: copy, posts, projects.
 
 - **Publish a post:** fill in its `body` paragraphs (replace the [bracketed prompts]),
   then flip `draft: false`. It renders on-site at `#/writing/<slug>`.
   Posts with `external` set (e.g. Medium) link out instead.
 - **Add a project:** append to `building.cards`: real link or don't list it.
-- Score totals self-compute; the tally can never drift.
 
 TODOs before going live (search "TODO" in content.ts):
 - GitHub username/repo links

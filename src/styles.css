@@ -43,15 +43,6 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-
 .nav-links { display: flex; gap: 1.2rem; flex: 1; }
 .nav-links a { color: var(--muted); font-weight: 500; font-size: 0.9rem; }
 .nav-links a:hover { color: var(--ink); text-decoration: none; }
-.score-pill {
-  font-variant-numeric: tabular-nums;
-  font-weight: 600; font-size: 0.82rem;
-  color: var(--muted);
-  border: 1px solid var(--line);
-  padding: 0.28rem 0.8rem; border-radius: 999px;
-  min-width: 6ch; text-align: center;
-  background: var(--paper);
-}
 
 /* ---------- layout ---------- */
 .section {
@@ -100,11 +91,6 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-
 .life-stop-name { display: block; font-family: "Fraunces", serif; font-size: 1.05rem; line-height: 1.15; }
 .life-caption { display: block; margin-top: 0.25rem; color: var(--muted); font-size: 0.72rem; line-height: 1.3; }
 .life-ledger { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; max-width: 64rem; }
-.life-score { display: flex; align-items: flex-start; gap: 0.65rem; padding: 0.75rem; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
-.life-score > span { min-width: 3.5rem; padding: 0.12rem 0.35rem; border-radius: 6px; font-size: 0.78rem; font-weight: 800; text-align: center; }
-.life-score p { margin: 0; color: var(--muted); font-size: 0.8rem; line-height: 1.35; }
-.life-score.positive > span { background: var(--accent-soft); color: var(--accent); }
-.life-score.negative > span { background: var(--neg-soft); color: var(--neg); }
 @media (max-width: 680px) { .life-route { margin-left: 0.8rem; padding-left: 1.5rem; } .life-route::before { left: 0; transform: none; } .life-stop, .life-stop:nth-child(odd), .life-stop:nth-child(even) { width: 100%; align-self: stretch; justify-content: flex-start; padding: 0 0 0 1.3rem; text-align: left; min-height: 0; } .life-stop-number, .life-stop:nth-child(even) .life-stop-number { left: -2.5rem; right: auto; top: 0.8rem; width: 1.8rem; height: 1.8rem; } .life-card { width: 100%; } .life-ledger { grid-template-columns: 1fr; } }
 
 /* ---------- experience map ---------- */
@@ -115,8 +101,8 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-
 .route-wave { display: block; width: 100%; height: 100%; overflow: visible; }
 .route-wave path { fill: none; stroke: var(--accent); stroke-width: 2; stroke-dasharray: 5 7; vector-effect: non-scaling-stroke; opacity: 0.62; }
 .experience-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4rem; align-items: center; position: relative; z-index: 1; min-height: 17rem; transition: opacity 0.25s, transform 0.25s; }
-.experience-row:nth-child(even) .map-stop { order: 2; }
-.experience-row:nth-child(even) .inline-detail { order: 1; }
+.experience-row:nth-child(odd) .map-stop { grid-column: 1; justify-self: end; }
+.experience-row:nth-child(even) .map-stop { grid-column: 2; justify-self: start; }
 .map-stop { color: var(--ink); text-align: left; padding: 1.15rem 0; position: relative; display: flex; align-items: flex-start; gap: 0.9rem; width: 100%; max-width: 24rem; }
 .experience-row:not(.active) { opacity: 0.45; }
 .experience-row.active { opacity: 1; transform: scale(1.01); }
@@ -199,9 +185,7 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-
 .contact { text-align: center; }
 .contact-links { justify-content: center; }
 .section-sub.center { margin-left: auto; margin-right: auto; }
-.tally { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--accent); margin-top: 2.2rem; }
 .closing { font-family: "Fraunces", serif; font-style: italic; color: var(--muted); }
-.bonus { font-size: 0.8rem; color: var(--muted); opacity: 0.8; margin-top: 2.5rem; }
 
 /* ---------- off the clock ---------- */
 .off-clock { max-width: 70rem; }

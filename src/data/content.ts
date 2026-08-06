@@ -1,10 +1,8 @@
 // ============================================================
 // ALL SITE CONTENT LIVES HERE.
 // Posts: add to `posts` (set draft:false to publish).
-// Projects: append to `building.cards`. Score totals self-compute.
+// Projects: append to `building.cards`.
 // ============================================================
-
-export type Award = { pts: number; desc: string };
 
 export const identity = {
   name: "Akshaya Jonnalagadda",
@@ -25,11 +23,6 @@ export const story = {
     "Off the clock, the instinct doesn't switch off: I bake without following the recipe, learn board game rulebooks for fun, read history and science for the how, and plan the trip in a spreadsheet. I'm always learning a new system. I usually end up running it.",
   ],
   cities: ["Andhra Pradesh", "Chennai", "Philadelphia", "Sunnyvale", "San Diego", "Chandigarh", "Chennai", "Hyderabad", "Seattle"],
-  awards: [
-    { pts: 400, desc: "Decoded the unspoken rules of eight new cities." },
-    { pts: -15, desc: "Shinjuku Station defeated me for one full afternoon." },
-    { pts: -8, desc: "Never once successfully surprised on my birthday. I know all the tricks." },
-  ] as Award[],
 };
 
 // -------- writing --------
@@ -90,7 +83,7 @@ export const building = {
   cards: [
     {
       name: "Tiny Transformers, Big Personalities",
-      desc: "Small transformer models trained on movie and Seinfeld dialogue, to see how much personality fits in a model that trains on one GPU.",
+      desc: "Small transformer models trained on dialogue, to see how much personality fits in a model that trains on one GPU.",
       how: "PyTorch · custom tokenization · character-level and BPE experiments",
       tags: ["AI/ML", "From scratch"],
       embed: "https://huggingface.co/spaces/akshayaGPT/tiny-dialogue-1-character",
@@ -225,7 +218,6 @@ export const contact = {
   title: "Let's Make Things Click.",
   line: "If your team is untangling complex systems, or just wants to debate board game strategy, let's talk.",
   closing: "Next chapter starts at your team.",
-  bonus: "Bonus +42 points if you spotted which sitcom the scoring is borrowed from.",
 };
 
 export const offClock = {
@@ -234,13 +226,8 @@ export const offClock = {
   sub: "A few things I follow for no practical reason, except that they make the world more interesting.",
   cards: [
     { symbol: "✦", title: "Bake without a recipe", text: "A little intuition, a little controlled chaos, and usually something worth sharing.", image: "cookies" },
-    { symbol: "◈", title: "Learn the rulebook", text: "Board games are systems with better snacks and much more dramatic edge cases.", imageLabel: "Add a board-game photo" },
+    { symbol: "◈", title: "Learn the rulebook", text: "Board games are systems with better snacks and much more dramatic edge cases.", image: "board_game" },
     { symbol: "↗", title: "Read the map", text: "Transit maps, city histories, and the quiet logic behind how people move.", image: "travelling" },
-    { symbol: "⌁", title: "Keep asking why", text: "Books, science, and rabbit holes that turn a five-minute question into an evening.", image: "reading" },
+    { symbol: "⌁", title: "Keep reading", text: "Books, science, and rabbit holes that turn a five-minute question into an evening.", image: "reading" },
   ],
 };
-
-// ---- computed totals ----
-const sum = (a: Award[]) => a.reduce((s, x) => s + x.pts, 0);
-export const sectionTotals = { story: sum(story.awards) };
-export const finalTally = Object.values(sectionTotals).reduce((a, b) => a + b, 0);

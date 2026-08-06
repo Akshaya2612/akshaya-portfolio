@@ -1,53 +1,15 @@
-import { useEffect, useRef, useState, createContext, useContext, ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { MapContainer, TileLayer, Polyline, CircleMarker } from "react-leaflet";
 import movieComparerGif from "./images/Movie Comparer.gif";
-import cookiesImage from "./images/cookies.jpg";
+import cookiesImage from "./images/cookies.gif";
+import booksImage from "./images/books.jpg";
+import boardGameImage from "./images/board_game.jpg";
 import readingImage from "./images/reading.jpg";
 import travellingImage from "./images/travelling.jpg";
 import {
   identity, story, writing, building, work, contact, offClock,
-  experience, sectionTotals, finalTally, Post, Experience,
+  experience, Post,
 } from "./data/content";
-
-// ================= score engine (quiet thread) =================
-type ScoreCtx = { score: number; credit: (id: string, pts: number) => void };
-const Ctx = createContext<ScoreCtx>({ score: 0, credit: () => {} });
-
-function ScoreProvider({ children }: { children: ReactNode }) {
-  const [target, setTarget] = useState(0);
-  const [score, setScore] = useState(0);
-  const seen = useRef(new Set<string>());
-  const credit = (id: string, pts: number) => {
-    if (seen.current.has(id)) return;
-    seen.current.add(id);
-    setTarget(t => t + pts);
-  };
-  useEffect(() => {
-    if (score === target) return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) { setScore(target); return; }
-    const step = Math.ceil(Math.abs(target - score) / 12);
-    const t = setTimeout(() => setScore(s => s + Math.sign(target - s) * Math.min(step, Math.abs(target - s))), 30);
-    return () => clearTimeout(t);
-  }, [score, target]);
-  return <Ctx.Provider value={{ score, credit }}>{children}</Ctx.Provider>;
-}
-
-function useCreditOnView(id: string, pts: number) {
-  const ref = useRef<HTMLElement>(null);
-  const { credit } = useContext(Ctx);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || pts === 0) return;
-    const io = new IntersectionObserver(
-      es => es.forEach(e => { if (e.isIntersecting) { credit(id, pts); io.disconnect(); } }),
-      { threshold: 0.3 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [id, pts, credit]);
-  return ref;
-}
 
 // ================= tiny hash router for posts =================
 function useRoute() {
@@ -62,23 +24,17 @@ function useRoute() {
 }
 
 // ================= pieces =================
-const fmt = (n: number) => n.toLocaleString("en-US");
-
 function Eyebrow({ children }: { children: ReactNode }) {
   return <p className="eyebrow">{children}</p>;
 }
 
 function Nav() {
-  const { score } = useContext(Ctx);
   const links = [["story", "Story"], ["experience", "Experience"], ["writing", "Writing"], ["building", "Building"], ["contact", "Contact"]];
   return (
     <nav className="nav">
       <a className="nav-name" href="#top" onClick={() => (window.location.hash = "")}>AJ</a>
       <div className="nav-links">
         {links.map(([id, label]) => <a key={id} href={`#${id}`}>{label}</a>)}
-      </div>
-      <div className="score-pill" aria-live="polite" title="Keep scrolling. Points accrue.">
-        {fmt(score)} pts
       </div>
     </nav>
   );
@@ -97,7 +53,6 @@ function Hero() {
 }
 
 function Story() {
-  const ref = useCreditOnView("story", sectionTotals.story);
   const geoCities = [
     { name: "Andhra Pradesh", coords: [16.5, 79.7] as [number, number] }, { name: "Chennai", coords: [13.1, 80.3] as [number, number] },
     { name: "Philadelphia", coords: [40.0, -75.2] as [number, number] }, { name: "Sunnyvale", coords: [37.4, -122.0] as [number, number] },
@@ -107,7 +62,7 @@ function Story() {
   ];
   const routePoints = geoCities.map(city => city.coords);
   return (
-    <section id="story" className="section" ref={ref as React.RefObject<HTMLElement>}>
+    <section id="story" className="section">
       <Eyebrow>{story.chapter}</Eyebrow>
       <h2>{story.title}</h2>
       {story.paras.map((p, i) => <p key={i} className="prose">{p}</p>)}
@@ -117,9 +72,6 @@ function Story() {
           <Polyline positions={routePoints} pathOptions={{ color: "#2f9e7d", weight: 2, opacity: 0.72, dashArray: "5 7" }} />
           {geoCities.map((city, i) => <CircleMarker key={`${city.name}-${i}`} center={city.coords} radius={3.5} pathOptions={{ color: "#2f9e7d", weight: 1.5, fillColor: "#2f9e7d", fillOpacity: 1 }} />)}
         </MapContainer>
-      </div>
-      <div className="life-ledger">
-        {story.awards.map((a, i) => <div className={`life-score ${a.pts < 0 ? "negative" : "positive"}`} key={i}><span>{a.pts > 0 ? "+" : ""}{fmt(a.pts)}</span><p>{a.desc}</p></div>)}
       </div>
     </section>
   );
@@ -192,25 +144,6 @@ function Work() {
   );
 }
 
-function ExperienceDetail({ item }: { item: Experience }) {
-  return (
-    <article className="experience-detail" aria-live="polite">
-      <div className="detail-topline">
-        <div>
-          <p className="detail-kicker">{item.city} · {item.dates}</p>
-          <h3>{item.company}</h3>
-          <p className="detail-title">{item.title}</p>
-        </div>
-      </div>
-      <p className="detail-summary">{item.summary}</p>
-      <div className="detail-grid compact-detail">
-        <div><p className="detail-label">Selected work</p><ul>{item.proof.slice(0, 2).map(line => <li key={line}>{line}</li>)}</ul></div>
-      </div>
-      <p className="detail-impact"><span className="detail-label">Why it mattered</span>{item.impact}</p>
-    </article>
-  );
-}
-
 function ExperienceMap() {
   const [selected, setSelected] = useState(experience.stops[0].id);
   const rowRefs = useRef<Record<string, HTMLDivElement | null>>({});
@@ -237,7 +170,6 @@ function ExperienceMap() {
                 <span className="stop-dot">{i + 1}</span>
                 <span className="stop-copy"><strong>{stop.company}</strong><small>{stop.title}</small><small>{stop.city} · {stop.dates}</small></span>
               </div>
-              <div id={`experience-detail-${stop.id}`} className="inline-detail"><ExperienceDetail item={stop} /></div>
             </div>
           ))}
         </div>
@@ -247,7 +179,6 @@ function ExperienceMap() {
 }
 
 function Contact() {
-  const { score } = useContext(Ctx);
   return (
     <footer id="contact" className="section contact">
       <Eyebrow>{contact.chapter}</Eyebrow>
@@ -257,15 +188,13 @@ function Contact() {
         <a href={identity.linkedin} target="_blank" rel="noreferrer">LinkedIn ↗</a>
         <a href={identity.github} target="_blank" rel="noreferrer">GitHub ↗</a>
       </div>
-      <p className="tally">{fmt(score)} / {fmt(finalTally)} points</p>
       <p className="closing">{contact.closing}</p>
-      <p className="bonus">{contact.bonus}</p>
     </footer>
   );
 }
 
 function OffClock() {
-  const images: Record<string, string> = { cookies: cookiesImage, reading: readingImage, travelling: travellingImage };
+  const images: Record<string, string> = { cookies: cookiesImage, travelling: travellingImage, books: booksImage, board_game: boardGameImage, reading: readingImage };
   return (
     <section id="off-clock" className="section off-clock">
       <Eyebrow>{offClock.chapter}</Eyebrow>
@@ -274,9 +203,7 @@ function OffClock() {
       <div className="off-clock-grid">
         {offClock.cards.map(card => (
           <article className="off-clock-card" key={card.title}>
-            <div className="image-slot" aria-label={"imageLabel" in card ? card.imageLabel : card.title}>
-              {"image" in card && card.image ? <img src={images[card.image]} alt="" /> : <span>{"imageLabel" in card ? card.imageLabel : ""}</span>}
-            </div>
+            {"image" in card && card.image && <div className="image-slot"><img src={images[card.image]} alt="" /></div>}
             <span className="off-clock-symbol" aria-hidden="true">{card.symbol}</span>
             <h3>{card.title}</h3>
             <p>{card.text}</p>
@@ -291,7 +218,7 @@ export default function App() {
   const slug = useRoute();
   const post = slug ? writing.posts.find(p => p.slug === slug && !p.external) : null;
   return (
-    <ScoreProvider>
+    <>
       <Nav />
       {post ? (
         <PostPage post={post} />
@@ -307,6 +234,6 @@ export default function App() {
         </main>
       )}
       {!post && <Contact />}
-    </ScoreProvider>
+    </>
   );
 }
