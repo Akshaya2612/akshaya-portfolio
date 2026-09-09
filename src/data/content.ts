@@ -6,13 +6,65 @@
 
 export const identity = {
   name: "Akshaya Jonnalagadda",
-  tagline: "I diagnose systems, not people.",
-  hook: "I wanted to be a doctor. I ended up debugging a different kind of patient.",
+  tagline: "I build systems that make complexity legible.",
+  hook: "Senior software and platform engineer with product judgment and applied AI range.",
   sub: "Engineer of seven years at Amazon and SS&C, now doing an MSIS at UW Foster. I learn how systems work: codebases, orgs, transit maps, and how to make them make sense for everyone else.",
   linkedin: "https://www.linkedin.com/in/akshaya-jonnalagadda-00a30615a/",
   github: "https://github.com/Akshaya2612", // TODO: set
   welcome: "Welcome! Everything is figure-out-able.",
 };
+
+export const technicalProfile = {
+  chapter: "The Signal",
+  title: "What I bring to the system",
+  sub: "Seven years building internal platforms, distributed services, and AI-assisted workflows for teams operating at scale.",
+  metrics: [
+    { value: "70+", label: "services onboarded" },
+    { value: "1,200+", label: "fulfillment sites" },
+    { value: "29", label: "dependent services" },
+    { value: "$1.5M", label: "potential loss prevented" },
+  ],
+  capabilities: [
+    { title: "Platform engineering", text: "Self-service systems, configuration workflows, APIs, metadata-driven design, and developer enablement." },
+    { title: "Distributed systems", text: "Multi-region architecture, event-driven workflows, service integration, authentication, and safe migrations." },
+    { title: "Applied AI", text: "LLM-assisted onboarding, RAG, semantic search, document parsing, and ML prototypes grounded in real operations." },
+    { title: "Technical leadership", text: "Ambiguous problem framing, cross-team alignment, architecture documentation, mentoring, and delivery discipline." },
+    { title: "Maintainable by default", text: "Turn one-off operational knowledge into documented, reusable systems. Replace manual configuration with repeatable infrastructure and workflows." },
+    { title: "Visible failure modes", text: "Build validation, monitoring, audit trails, and production-mirrored environments so failures are observable, diagnosable, and fixable." },
+  ],
+};
+
+export const systemsWork = {
+  chapter: "Selected Systems",
+  title: "Problems I have made smaller",
+  sub: "A few representative systems from fulfillment, logistics, and applied AI. Details are intentionally generalized; the engineering patterns and outcomes are real.",
+  cards: [
+    { title: "Configuration as a platform", label: "FULFILLMENT / PLATFORM", problem: "Fulfillment Center setup and reconfiguration depended on repeated manual configuration work across services.", contribution: "Automated configuration updates across 13 services and turned the process into a reusable path for FC setup, regional migration, and FC reconfiguration.", outcome: "Removed approximately one engineer-year of recurring manual work annually. The system remains the path for FC configuration updates today.", pattern: "Infrastructure as code · reusable workflows · maintainability" },
+    { title: "Service onboarding, under an hour", label: "PLATFORM / APPLIED AI", problem: "New-service onboarding depended on scattered, unstructured documentation and took weeks.", contribution: "Designed an LLM-assisted pipeline that parsed service documentation into structured catalog metadata and a self-service workflow.", outcome: "Live across 70+ services in a global fulfillment network, reducing onboarding from weeks to under an hour.", pattern: "Metadata-driven design · document parsing · self-service platform" },
+    { title: "Root-cause analysis as a workflow", label: "APPLIED AI / OPERATIONS", problem: "Operations teams spent too much time correlating live system data with scattered technical knowledge.", contribution: "Led an intern to build a secure assistant combining live API data with a 1,500+ document knowledge base.", outcome: "Automated diagnosis across 70+ workflows, with a target of reducing resolution time by 70%. The system was still being productionalized when I left.", pattern: "RAG · semantic search · secure operational tooling" },
+    { title: "Governance built into the path", label: "RELIABILITY / PLATFORM", problem: "Self-service logistics workflows created risk when approvals and configuration changes were hard to audit.", contribution: "Architected an event-driven approvals and audit platform with governance guardrails and role-scoped access.", outcome: "Designed to prevent an estimated $1.5M in potential losses from misconfigurations.", pattern: "Event-driven architecture · auditability · access control" },
+  ],
+};
+
+export const engineeringPrinciples = [
+  { title: "Design for safe change", text: "Backward compatibility, mirrored environments, and gradual migration paths turn architectural ambition into something teams can actually adopt." },
+  { title: "Make knowledge executable", text: "If the answer is trapped in a document or in one engineer's head, it is not yet a platform. Structure it, search it, and put it in the workflow." },
+  { title: "Make failure visible", text: "Systems can fail. What matters is that they fail loudly enough to be diagnosed, understood, and fixed before the problem compounds." },
+  { title: "Build once, reuse often", text: "Document the process once, replace manual configuration with infrastructure as code, and make the next run cheaper and safer than the first." },
+];
+
+export const leadership = {
+  chapter: "Technical Leadership",
+  title: "The work around the code",
+  items: ["Led an intern and cross-team partners through a secure AI operations assistant launch.", "Coached 10 engineers through continuous-delivery adoption, raising coverage to 95% and reducing release waits to under one day.", "Mentored 4+ junior engineers and organized knowledge-sharing forums across two engineering organizations.", "Reduced security risk across five applications as a designated security certifier."],
+};
+
+export const stack = [
+  { group: "Languages", items: "Python · Java · TypeScript · JavaScript · C# · SQL · Shell" },
+  { group: "Cloud and data", items: "AWS Lambda · Step Functions · DynamoDB · Neptune · EventBridge · S3 · API Gateway · CDK" },
+  { group: "AI and retrieval", items: "RAG · LLM integration · prompt engineering · semantic search · document parsing · metadata extraction" },
+  { group: "Engineering systems", items: "Microservices · REST APIs · system design · CI/CD · test automation · CloudWatch · Jest · JUnit" },
+];
 
 export const story = {
   chapter: "The Origin",
@@ -158,12 +210,12 @@ export const experience = {
       id: "amazon-platforms",
       company: "Amazon",
       title: "Software Development Engineer II",
-      dates: "2024 - Present",
+      dates: "2024 - May 2026",
       city: "Hyderabad",
       summary: "Turning ambiguous platform problems into self-service systems for fulfillment teams.",
       owned: "Platform architecture, AI-assisted onboarding, regional routing, configuration lifecycle, and operations tooling.",
       proof: ["LLM-assisted onboarding for 70+ services across 1,200+ fulfillment sites", "Backward-compatible routing framework adopted by 29 dependent services", "Secure AI operations assistant grounded in a 1,500+ document knowledge base"],
-      impact: "Made new-service onboarding take under an hour and targeted a 70% reduction in mean time to resolution.",
+      impact: "Made new-service onboarding take under an hour. The operations assistant had a 70% resolution-time reduction target and was still being productionalized when I left in May 2026.",
       signals: ["PM-T", "SDE", "FDE", "Applied Scientist"],
     },
     {

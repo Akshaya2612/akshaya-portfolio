@@ -7,8 +7,8 @@ import boardGameImage from "./images/board_game.jpg";
 import readingImage from "./images/reading.jpg";
 import travellingImage from "./images/travelling.jpg";
 import {
-  identity, story, writing, building, work, contact, offClock,
-  experience, Post,
+  identity, story, writing, building, work, contact, offClock, technicalProfile,
+  experience, systemsWork, engineeringPrinciples, leadership, stack, Post,
 } from "./data/content";
 
 // ================= tiny hash router for posts =================
@@ -23,18 +23,24 @@ function useRoute() {
   return m ? m[1] : null;
 }
 
+function usePage() {
+  const [hash, setHash] = useState(window.location.hash);
+  useEffect(() => { const fn = () => setHash(window.location.hash); window.addEventListener("hashchange", fn); return () => window.removeEventListener("hashchange", fn); }, []);
+  return hash.replace(/^#\/?/, "").split("/")[0] || "home";
+}
+
 // ================= pieces =================
 function Eyebrow({ children }: { children: ReactNode }) {
   return <p className="eyebrow">{children}</p>;
 }
 
 function Nav() {
-  const links = [["story", "Story"], ["experience", "Experience"], ["writing", "Writing"], ["building", "Building"], ["contact", "Contact"]];
+  const links = [["home", "Home"], ["featured-work", "Featured Work"], ["systems", "Systems"], ["experience", "Experience"], ["projects", "Projects"], ["about", "About"]];
   return (
     <nav className="nav">
       <a className="nav-name" href="#top" onClick={() => (window.location.hash = "")}>AJ</a>
       <div className="nav-links">
-        {links.map(([id, label]) => <a key={id} href={`#${id}`}>{label}</a>)}
+        {links.map(([id, label]) => <a key={id} href={id === "home" ? "#top" : `#/${id}`}>{label}</a>)}
       </div>
     </nav>
   );
@@ -50,6 +56,30 @@ function Hero() {
       <p className="hero-name">{identity.name}</p>
     </header>
   );
+}
+
+function TechnicalProfile() {
+  return (
+    <section id="signal" className="section technical-profile">
+      <Eyebrow>{technicalProfile.chapter}</Eyebrow>
+      <h2>{technicalProfile.title}</h2>
+      <p className="section-sub">{technicalProfile.sub}</p>
+      <div className="metrics-band">{technicalProfile.metrics.map(metric => <div className="metric" key={metric.label}><strong>{metric.value}</strong><span>{metric.label}</span></div>)}</div>
+      <div className="capability-grid">{technicalProfile.capabilities.map(capability => <article className="capability" key={capability.title}><span className="capability-marker">+</span><h3>{capability.title}</h3><p>{capability.text}</p></article>)}</div>
+    </section>
+  );
+}
+
+function SystemsWork() {
+  return <section id="systems" className="section systems-work"><Eyebrow>{systemsWork.chapter}</Eyebrow><h2>{systemsWork.title}</h2><p className="section-sub">{systemsWork.sub}</p><div className="system-grid">{systemsWork.cards.map(card => <article className="system-card" key={card.title}><p className="system-label">{card.label}</p><h3>{card.title}</h3><p><strong>Problem:</strong> {card.problem}</p><p><strong>Contribution:</strong> {card.contribution}</p><p className="system-outcome"><strong>Outcome:</strong> {card.outcome}</p><p className="system-pattern">{card.pattern}</p></article>)}</div></section>;
+}
+
+function Principles() {
+  return <section id="principles" className="section principles"><Eyebrow>How I think</Eyebrow><h2>Engineering judgment is part of the system.</h2><div className="principle-grid">{engineeringPrinciples.map((principle, i) => <article key={principle.title}><span className="principle-number">0{i + 1}</span><h3>{principle.title}</h3><p>{principle.text}</p></article>)}</div></section>;
+}
+
+function Leadership() {
+  return <section id="leadership" className="section leadership"><Eyebrow>{leadership.chapter}</Eyebrow><h2>{leadership.title}</h2><ul className="leadership-list">{leadership.items.map(item => <li key={item}>{item}</li>)}</ul><div className="stack-list">{stack.map(row => <div className="stack-row" key={row.group}><strong>{row.group}</strong><span>{row.items}</span></div>)}</div></section>;
 }
 
 function Story() {
@@ -178,6 +208,12 @@ function ExperienceMap() {
   );
 }
 
+function FeaturedWorkPage() { return <main><Hero /><SystemsWork /></main>; }
+function SystemsPage() { return <main><TechnicalProfile /><Principles /><Leadership /></main>; }
+function ExperiencePage() { return <main><ExperienceMap /><Leadership /></main>; }
+function ProjectsPage() { return <main><Building /><Writing /></main>; }
+function AboutPage() { return <main><Story /><OffClock /><Contact /></main>; }
+
 function Contact() {
   return (
     <footer id="contact" className="section contact">
@@ -216,24 +252,32 @@ function OffClock() {
 
 export default function App() {
   const slug = useRoute();
+  const page = usePage();
   const post = slug ? writing.posts.find(p => p.slug === slug && !p.external) : null;
   return (
     <>
       <Nav />
       {post ? (
         <PostPage post={post} />
-      ) : (
+      ) : page === "featured-work" ? <FeaturedWorkPage />
+      : page === "systems" ? <SystemsPage />
+      : page === "experience" ? <ExperiencePage />
+      : page === "projects" ? <ProjectsPage />
+      : page === "about" ? <AboutPage />
+      : (
         <main>
           <Hero />
-          <Story />
+          <TechnicalProfile />
+          <SystemsWork />
+          <Principles />
           <ExperienceMap />
+          <Leadership />
           <Writing />
           <Building />
           <Work />
-          <OffClock />
         </main>
       )}
-      {!post && <Contact />}
+      {!post && page === "home" && <Contact />}
     </>
   );
 }
