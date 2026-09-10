@@ -32,6 +32,15 @@ export const technicalProfile = {
   ],
 };
 
+export const skillMatrix = [
+  { domain: "Distributed workflow systems", focus: "Event-driven state transitions, asynchronous approvals, retries, audit trails, and idempotent handlers." },
+  { domain: "Platform architecture", focus: "Self-service workflows, configuration as code, metadata-driven onboarding, and reusable infrastructure." },
+  { domain: "Cloud and data foundations", focus: "AWS Lambda, Step Functions, DynamoDB, EventBridge, S3, API Gateway, CloudWatch, and CDK." },
+  { domain: "Applied AI systems", focus: "Document parsing, structured metadata extraction, RAG, semantic search, and operational assistants." },
+  { domain: "Reliability and delivery", focus: "Visible failure modes, production-mirrored validation, safe migrations, test automation, and CI/CD." },
+  { domain: "Product-shaped engineering", focus: "Problem framing, operational empathy, technical trade-offs, stakeholder alignment, and measurable outcomes." },
+];
+
 export const systemsWork = {
   chapter: "Selected Systems",
   title: "Selected engineering systems",

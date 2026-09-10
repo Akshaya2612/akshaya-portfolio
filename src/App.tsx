@@ -8,7 +8,7 @@ import readingImage from "./images/reading.jpg";
 import travellingImage from "./images/travelling.jpg";
 import {
   identity, story, writing, building, work, contact, offClock, technicalProfile,
-  experience, systemsWork, engineeringPrinciples, leadership, stack, Post,
+  experience, systemsWork, engineeringPrinciples, leadership, stack, skillMatrix, Post,
 } from "./data/content";
 
 // ================= tiny hash router for posts =================
@@ -60,23 +60,34 @@ function Hero() {
 
 function Terminal() {
   const [command, setCommand] = useState("");
-  const [output, setOutput] = useState("Type help to inspect the system.");
+  const [output, setOutput] = useState<string[]>([
+    "SYSTEMS CONSOLE // READY",
+    "Type a directive below to inspect the portfolio.",
+  ]);
   const run = (value: string) => {
     const cmd = value.trim().toLowerCase();
-    const responses: Record<string, string> = {
-      help: "experience   systems   stack   contact",
-      experience: "Amazon · SS&C Eze · Apple · UW Foster",
-      systems: "workflow platforms · configuration as code · visible failure",
-      stack: "Java · Python · TypeScript · AWS · Step Functions · DynamoDB",
-      contact: "LinkedIn and GitHub are at the end of the route.",
+    if (cmd === "clear") {
+      setOutput([]);
+      setCommand("");
+      return;
+    }
+    const responses: Record<string, string[]> = {
+      help: ["Available CLI directives:", "• alex.status : Ingest full telemetry stats", "• stack       : Print verified production languages & tools", "• contact     : Print public routing links", "• clear       : Flush current display buffers"],
+      "alex.status": ["TELEMETRY // NOMINAL", "systems shaped: platform workflows · distributed services · applied AI", "current focus: MSIS · product judgment · technical strategy"],
+      stack: ["LANGUAGES  // Python · Java · TypeScript · C# · SQL", "CLOUD      // Lambda · Step Functions · DynamoDB · EventBridge · S3 · CDK", "SYSTEMS    // REST · CI/CD · test automation · CloudWatch · RAG"],
+      contact: ["PUBLIC ROUTES", "linkedin  → linkedin.com/in/akshaya-jonnalagadda-00a30615", "github    → github.com/Akshaya2612"],
     };
-    setOutput(responses[cmd] ?? `command not found: ${cmd || "(empty)"}`);
+    setOutput(responses[cmd] ?? [`command not found: ${cmd || "(empty)"}`, "Type help for available directives."]);
     setCommand("");
   };
   return <section className="terminal-shell" aria-label="Interactive portfolio terminal">
     <div className="terminal-bar"><span className="terminal-dot red" /><span className="terminal-dot yellow" /><span className="terminal-dot green" /><span className="terminal-title">akshaya@systems:~</span></div>
-    <div className="terminal-body"><p><span className="prompt">$</span> status --now</p><p className="terminal-output">{output}</p><form onSubmit={event => { event.preventDefault(); run(command); }}><label><span className="prompt">$</span><input value={command} onChange={event => setCommand(event.target.value)} placeholder="try: help" aria-label="Terminal command" /></label></form></div>
+    <div className="terminal-body"><p><span className="prompt">$</span> status --now</p><div className="terminal-output">{output.map((line, i) => <p key={`${line}-${i}`}>{line}</p>)}</div><p className="terminal-directives">Available CLI directives: <button type="button" onClick={() => run("help")}>help</button> · <button type="button" onClick={() => run("alex.status")}>alex.status</button> · <button type="button" onClick={() => run("stack")}>stack</button> · <button type="button" onClick={() => run("contact")}>contact</button> · <button type="button" onClick={() => run("clear")}>clear</button></p><form onSubmit={event => { event.preventDefault(); run(command); }}><label><span className="prompt">$</span><input value={command} onChange={event => setCommand(event.target.value)} placeholder="enter directive" aria-label="Terminal command" /></label></form></div>
   </section>;
+}
+
+function SkillMatrix() {
+  return <section className="section skill-matrix"><div className="domain-heading"><span>02 // CAPABILITY DOMAIN</span><b>::</b><span>DECOUPLED SYSTEMS ARCHITECTURE</span></div><h2>Architectural &amp; Core Skill Matrix</h2><p className="section-sub">The design patterns, infrastructure, and judgment I bring to systems that have to keep moving when the environment is imperfect.</p><div className="skill-matrix-grid">{skillMatrix.map((skill, i) => <article className="skill-matrix-card" key={skill.domain}><span className="matrix-index">0{i + 1}</span><h3>{skill.domain}</h3><p>{skill.focus}</p></article>)}</div></section>;
 }
 
 function Topology() {
@@ -251,7 +262,7 @@ function ExperienceMap() {
 }
 
 function FeaturedWorkPage() { return <main><Hero /><FeaturedCaseStudies /></main>; }
-function SystemsPage() { return <main><TechnicalProfile /><Topology /><SystemsWork /><Principles /><Leadership /></main>; }
+function SystemsPage() { return <main><TechnicalProfile /><SkillMatrix /><Topology /><SystemsWork /><Principles /><Leadership /></main>; }
 function ExperiencePage() { return <main><ExperienceMap /><Leadership /></main>; }
 function ProjectsPage() { return <main><Building /><Writing /></main>; }
 function AboutPage() { return <main><Story /><OffClock /><Contact /></main>; }
