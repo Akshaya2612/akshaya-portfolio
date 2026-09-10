@@ -59,7 +59,7 @@ function Hero() {
 }
 
 function DossierRibbon() {
-  return <div className="dossier-ribbon"><div><span className="status-light" /> <span>DOSSIER: AKSHAYA-JONNALAGADDA</span><i>/</i><span>INDEX: 2017 → PRESENT</span><i>/</i><span className="ribbon-focus">FOCUS: PLATFORM · DISTRIBUTED SYSTEMS · APPLIED AI</span></div><div><span>EXPERIENCE: 7 YEARS</span><i>|</i><span>BASE: SEATTLE</span><i>|</i><span>UW FOSTER MSIS</span></div></div>;
+  return <div className="dossier-ribbon"><div><span className="status-light" /> <span>DOSSIER: AKSHAYA-JONNALAGADDA</span><i>/</i><span>INDEX: 2018 → PRESENT</span><i>/</i><span className="ribbon-focus">FOCUS: PLATFORM · DISTRIBUTED SYSTEMS · APPLIED AI</span></div><div><span>EXPERIENCE: 7 YEARS</span><i>|</i><span>BASE: SEATTLE</span><i>|</i><span>UW FOSTER MSIS</span></div></div>;
 }
 
 function OverviewDossier() {
