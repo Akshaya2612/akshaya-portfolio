@@ -58,6 +58,32 @@ function Hero() {
   );
 }
 
+function DossierRibbon() {
+  return <div className="dossier-ribbon"><div><span className="status-light" /> <span>DOSSIER: AKSHAYA-JONNALAGADDA</span><i>/</i><span>INDEX: 2017 → PRESENT</span><i>/</i><span className="ribbon-focus">FOCUS: PLATFORM · DISTRIBUTED SYSTEMS · APPLIED AI</span></div><div><span>EXPERIENCE: 7 YEARS</span><i>|</i><span>BASE: SEATTLE</span><i>|</i><span>UW FOSTER MSIS</span></div></div>;
+}
+
+function OverviewDossier() {
+  const chips = ["Workflow orchestration", "Configuration as code", "AWS Step Functions", "DynamoDB", "Event-driven systems", "Applied AI", "Visible failure modes", "Technical strategy"];
+  return <>
+    <DossierRibbon />
+    <section className="overview-dossier">
+      <div className="overview-grid">
+        <div className="overview-spine">
+          <div className="overview-kicker"><span>[00 // EXECUTIVE SUMMARY]</span><b /> <span>SYSTEMS_EVOLUTION</span></div>
+          <h1>Seven years building workflow systems and financial platforms that people can operate with confidence.</h1>
+          <p className="overview-lede">Software Development Engineer with production backend and distributed systems experience across Amazon Fulfillment Tech and SS&amp;C Eze. I build the paths that turn requests into governed, observable outcomes, then bring product and strategy judgment to what should happen next.</p>
+          <div className="overview-metrics">{technicalProfile.metrics.map(metric => <div className="overview-metric" key={metric.label}><span>{metric.label}</span><strong>{metric.value}</strong></div>)}</div>
+        </div>
+        <aside className="overview-signal">
+          <div className="signal-visual"><div className="signal-grid" /><div className="signal-orbit orbit-one" /><div className="signal-orbit orbit-two" /><div className="signal-core">AJ<span>SYS</span></div><div className="signal-caption"><span>ENGINEERING PHILOSOPHY</span><strong>Operational clarity is a feature.</strong></div></div>
+          <div className="competency-panel"><span className="panel-label">CORE COMPETENCIES</span><div className="competency-chips">{chips.map(chip => <span key={chip}>{chip}</span>)}</div></div>
+        </aside>
+      </div>
+    </section>
+    <Terminal />
+  </>;
+}
+
 function Terminal() {
   const [command, setCommand] = useState("");
   const [output, setOutput] = useState<string[]>([
@@ -121,6 +147,10 @@ function HomeWorkPreview() {
 
 function ExperienceSnapshot() {
   return <section className="section experience-snapshot"><div className="preview-heading"><div><Eyebrow>[03] // EXPERIENCE</Eyebrow><h2>Production systems, then product judgment.</h2></div><a href="#/experience">Open experience →</a></div><div className="snapshot-list">{experience.stops.slice(0, 4).map(stop => <div className="snapshot-row" key={stop.id}><span>{stop.dates}</span><strong>{stop.company}</strong><em>{stop.title}</em></div>)}</div></section>;
+}
+
+function ExperienceTrackRecord() {
+  return <section className="section track-record"><div className="track-heading"><div><Eyebrow>[01 // CHRONOLOGY]</Eyebrow><h2>Production track record.</h2></div><p>Roles, ownership, and impact across the systems that shaped how I work.</p></div><div className="track-list">{experience.stops.map((stop, i) => <article className="track-card" key={stop.id}><div className="track-meta"><span className="track-number">0{i + 1}</span><span className="track-dates">{stop.dates}</span><strong>{stop.title}</strong><b>{stop.company}</b><small>{stop.city}</small></div><div className="track-content"><span className="track-kicker">PRIMARY SCOPE</span><h3>{stop.summary}</h3><p>{stop.owned}</p><div className="track-proof"><div><span className="track-kicker">EVIDENCE</span><ul>{stop.proof.map(item => <li key={item}>{item}</li>)}</ul></div><div className="track-impact"><span className="track-kicker">IMPACT</span><p>{stop.impact}</p></div></div></div></article>)}</div></section>;
 }
 
 function Principles() {
@@ -263,7 +293,7 @@ function ExperienceMap() {
 
 function FeaturedWorkPage() { return <main><Hero /><FeaturedCaseStudies /></main>; }
 function SystemsPage() { return <main><TechnicalProfile /><SkillMatrix /><Topology /><SystemsWork /><Principles /><Leadership /></main>; }
-function ExperiencePage() { return <main><ExperienceMap /><Leadership /></main>; }
+function ExperiencePage() { return <main><DossierRibbon /><ExperienceTrackRecord /><ExperienceMap /><Leadership /></main>; }
 function ProjectsPage() { return <main><Building /><Writing /></main>; }
 function AboutPage() { return <main><Story /><OffClock /><Contact /></main>; }
 
@@ -319,9 +349,7 @@ export default function App() {
       : page === "about" ? <AboutPage />
       : (
         <main>
-          <Hero />
-          <Terminal />
-          <TechnicalProfile />
+          <OverviewDossier />
           <HomeWorkPreview />
           <ExperienceSnapshot />
           <Work />
