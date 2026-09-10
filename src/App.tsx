@@ -104,6 +104,14 @@ function SystemsWork() {
   return <section id="systems" className="section systems-work"><Eyebrow>{systemsWork.chapter}</Eyebrow><h2>{systemsWork.title}</h2><p className="section-sub">{systemsWork.sub}</p><div className="system-grid">{systemsWork.cards.map(card => <article className="system-card" key={card.title}><p className="system-label">{card.label}</p><h3>{card.title}</h3><p><strong>Problem:</strong> {card.problem}</p><p><strong>Contribution:</strong> {card.contribution}</p><p className="system-outcome"><strong>Outcome:</strong> {card.outcome}</p><p className="system-pattern">{card.pattern}</p></article>)}</div></section>;
 }
 
+function HomeWorkPreview() {
+  return <section className="section home-preview"><div className="preview-heading"><div><Eyebrow>[02] // SELECTED_WORK</Eyebrow><h2>Two systems worth opening.</h2></div><a href="#/featured-work">View case studies →</a></div><div className="preview-grid">{systemsWork.cards.slice(0, 2).map(card => <article className="preview-card" key={card.title}><p className="system-label">{card.label}</p><h3>{card.title}</h3><p>{card.contribution}</p><span>{card.pattern}</span></article>)}</div></section>;
+}
+
+function ExperienceSnapshot() {
+  return <section className="section experience-snapshot"><div className="preview-heading"><div><Eyebrow>[03] // EXPERIENCE</Eyebrow><h2>Production systems, then product judgment.</h2></div><a href="#/experience">Open experience →</a></div><div className="snapshot-list">{experience.stops.slice(0, 4).map(stop => <div className="snapshot-row" key={stop.id}><span>{stop.dates}</span><strong>{stop.company}</strong><em>{stop.title}</em></div>)}</div></section>;
+}
+
 function Principles() {
   return <section id="principles" className="section principles"><Eyebrow>How I think</Eyebrow><h2>Philosophies for production systems.</h2><p className="section-sub">The principles behind the architecture: concise enough to remember, specific enough to change how I build.</p><div className="philosophy-list">{engineeringPrinciples.map((principle, i) => <article className="philosophy-row" key={principle.title}><span className="philosophy-number">[PHILOSOPHY_0{i + 1}]</span><h3>{principle.title}</h3><p>{principle.text}</p></article>)}</div></section>;
 }
@@ -243,7 +251,7 @@ function ExperienceMap() {
 }
 
 function FeaturedWorkPage() { return <main><Hero /><FeaturedCaseStudies /></main>; }
-function SystemsPage() { return <main><TechnicalProfile /><Topology /><Principles /><Leadership /></main>; }
+function SystemsPage() { return <main><TechnicalProfile /><Topology /><SystemsWork /><Principles /><Leadership /></main>; }
 function ExperiencePage() { return <main><ExperienceMap /><Leadership /></main>; }
 function ProjectsPage() { return <main><Building /><Writing /></main>; }
 function AboutPage() { return <main><Story /><OffClock /><Contact /></main>; }
@@ -303,8 +311,8 @@ export default function App() {
           <Hero />
           <Terminal />
           <TechnicalProfile />
-          <SystemsWork />
-          <ExperienceMap />
+          <HomeWorkPreview />
+          <ExperienceSnapshot />
           <Work />
         </main>
       )}

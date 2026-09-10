@@ -108,6 +108,22 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-
 .topology-caption { max-width: 48rem; color: var(--muted); font-size: .78rem; line-height: 1.6; margin: 1.2rem 0 0; border-left: 2px solid var(--cyan); padding-left: .8rem; }
 @media (max-width: 760px) { .topology-flow { grid-template-columns: 1fr; gap: .35rem; } .topology-node-wrap { display: block; } .topology-arrow { display: block; text-align: center; transform: rotate(90deg); height: 1.5rem; } .topology-node { min-height: 5.2rem; } .node-index { margin-bottom: .6rem; } }
 
+/* ---------- home overview ---------- */
+.preview-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem; margin-bottom: 1.7rem; }
+.preview-heading h2 { margin-bottom: 0; }
+.preview-heading > a { font-family: "JetBrains Mono", monospace; font-size: .68rem; white-space: nowrap; }
+.preview-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.preview-card { padding: 1.35rem; background: var(--panel); min-height: 12rem; transition: background .2s, transform .2s; }
+.preview-card:hover { background: #1b1f28; transform: translateY(-3px); }
+.preview-card h3 { font-size: 1.25rem; }
+.preview-card p:not(.system-label) { color: var(--muted); font-size: .88rem; line-height: 1.55; }
+.preview-card > span { display: block; border-top: 1px solid var(--line); padding-top: .8rem; color: var(--accent); font-family: "JetBrains Mono", monospace; font-size: .64rem; }
+.snapshot-list { border-top: 1px solid var(--line); }
+.snapshot-row { display: grid; grid-template-columns: 9rem 1fr 1fr; gap: 1rem; align-items: baseline; padding: .8rem 0; border-bottom: 1px solid var(--line); font-size: .84rem; }
+.snapshot-row span, .snapshot-row em { color: var(--muted); font-style: normal; }
+.snapshot-row strong { color: var(--accent); font-weight: 500; }
+@media (max-width: 680px) { .preview-heading { display: block; } .preview-heading > a { display: inline-block; margin-top: .75rem; } .preview-grid { grid-template-columns: 1fr; } .snapshot-row { grid-template-columns: 1fr 1fr; gap: .2rem .7rem; } .snapshot-row span { grid-column: 1 / -1; font-size: .68rem; } }
+
 /* ---------- technical profile ---------- */
 .technical-profile { max-width: 70rem; }
 .metrics-band { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 2.4rem 0; }
