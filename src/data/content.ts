@@ -20,7 +20,7 @@ export const technicalProfile = {
   sub: "Seven years building internal platforms, distributed services, and AI-assisted workflows for teams operating at scale.",
   metrics: [
     { value: "70+", label: "services onboarded" },
-    { value: "Global", label: "fulfillment network" },
+    { value: "13", label: "services in config path" },
     { value: "29", label: "dependent services" },
     { value: "$1.5M", label: "potential loss prevented" },
   ],
@@ -29,15 +29,13 @@ export const technicalProfile = {
     { title: "Distributed systems", text: "Multi-region architecture, event-driven workflows, service integration, authentication, and safe migrations." },
     { title: "Applied AI", text: "LLM-assisted onboarding, RAG, semantic search, document parsing, and ML prototypes grounded in real operations." },
     { title: "Technical leadership", text: "Ambiguous problem framing, cross-team alignment, architecture documentation, mentoring, and delivery discipline." },
-    { title: "Maintainable by default", text: "Turn one-off operational knowledge into documented, reusable systems. Replace manual configuration with repeatable infrastructure and workflows." },
-    { title: "Visible failure modes", text: "Build validation, monitoring, audit trails, and production-mirrored environments so failures are observable, diagnosable, and fixable." },
   ],
 };
 
 export const systemsWork = {
   chapter: "Selected Systems",
-  title: "Problems I have made smaller",
-  sub: "A few representative systems from fulfillment, logistics, and applied AI. Details are intentionally generalized; the engineering patterns and outcomes are real.",
+  title: "Selected engineering systems",
+  sub: "A compact index of the platforms and workflows I have shaped. The detailed case studies live on the Featured Work page.",
   cards: [
     { title: "Configuration as a platform", label: "FULFILLMENT / PLATFORM", problem: "Fulfillment Center setup and reconfiguration depended on repeated manual configuration work across services.", contribution: "Automated configuration updates across 13 services and turned the process into a reusable path for FC setup, regional migration, and FC reconfiguration.", outcome: "Removed approximately one engineer-year of recurring manual work annually. The system remains the path for FC configuration updates today.", pattern: "Infrastructure as code · reusable workflows · maintainability" },
     { title: "Service onboarding, under an hour", label: "PLATFORM / APPLIED AI", problem: "New-service onboarding depended on scattered, unstructured documentation and took weeks.", contribution: "Designed an LLM-assisted pipeline that parsed service documentation into structured catalog metadata and a self-service workflow.", outcome: "Live across 70+ services in a global fulfillment network, reducing onboarding from weeks to under an hour.", pattern: "Metadata-driven design · document parsing · self-service platform" },

@@ -138,12 +138,34 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-
 .principle-number { color: var(--cyan); font-family: "JetBrains Mono", monospace; font-size: 0.72rem; }
 .principle-grid h3 { margin-top: 2.5rem; font-size: 1.1rem; }
 .principle-grid p { color: var(--muted); font-size: 0.88rem; }
+.philosophy-list { border-top: 1px solid var(--line); }
+.philosophy-row { display: grid; grid-template-columns: 10rem minmax(15rem, .8fr) 1.5fr; align-items: baseline; gap: 1.25rem; padding: 1rem 0; border-bottom: 1px solid var(--line); transition: background .2s, padding .2s; }
+.philosophy-row:hover { padding-left: .75rem; padding-right: .75rem; background: color-mix(in srgb, var(--panel) 72%, transparent); }
+.philosophy-number, .case-label { color: var(--cyan); font-family: "JetBrains Mono", monospace; font-size: .65rem; letter-spacing: .05em; }
+.philosophy-row h3 { margin: 0; font-size: 1rem; }
+.philosophy-row p { margin: 0; color: var(--muted); font-size: .84rem; line-height: 1.5; }
 .leadership-list { max-width: 52rem; margin: 0 0 3rem; padding-left: 1.1rem; color: var(--ink); }
 .leadership-list li { margin-bottom: 0.75rem; padding-left: 0.35rem; color: var(--muted); }
 .stack-list { border-top: 1px solid var(--line); }
 .stack-row { display: grid; grid-template-columns: 10rem 1fr; gap: 1rem; padding: 0.8rem 0; border-bottom: 1px solid var(--line); }
 .stack-row strong { color: var(--accent); font-family: "JetBrains Mono", monospace; font-size: 0.7rem; text-transform: uppercase; }
 .stack-row span { color: var(--muted); font-size: 0.84rem; }
+
+/* ---------- featured case studies ---------- */
+.featured-case-studies { max-width: 70rem; }
+.feature-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; }
+.feature-heading .eyebrow { margin-bottom: .7rem; }
+.feature-index { color: var(--muted); font-family: "JetBrains Mono", monospace; font-size: .65rem; letter-spacing: .06em; }
+.case-study-list { border-top: 1px solid var(--line); }
+.case-study { display: grid; grid-template-columns: 5rem 1fr; gap: 1.2rem; padding: 2rem 0; border-bottom: 1px solid var(--line); }
+.case-study-index { color: var(--accent); font-family: "JetBrains Mono", monospace; font-size: .85rem; padding-top: .15rem; }
+.case-study-main { min-width: 0; }
+.case-study h3 { font-size: clamp(1.35rem, 3vw, 2rem); margin-bottom: .8rem; }
+.case-study-summary { color: var(--ink); font-size: 1rem; max-width: 46rem; margin: 0 0 1.5rem; }
+.case-study-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; border-top: 1px solid var(--line); padding-top: 1rem; }
+.case-study-columns p { color: var(--muted); font-size: .85rem; line-height: 1.55; margin: .45rem 0 0; }
+.case-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 1.2rem; }
+.case-tags span { border: 1px solid var(--line); color: var(--accent); padding: .2rem .5rem; font-size: .63rem; }
 
 /* ---------- story ---------- */
 /* ---------- geographic life map ---------- */
@@ -243,6 +265,7 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-
 @media (max-width: 680px) { .grid-2 { grid-template-columns: 1fr; } }
 @media (max-width: 680px) { .metrics-band { grid-template-columns: repeat(2, 1fr); } .metric:nth-child(2) { border-right: 0; } .metric:nth-child(-n+2) { border-bottom: 1px solid var(--line); } .capability-grid { grid-template-columns: 1fr; } }
 @media (max-width: 680px) { .system-grid, .principle-grid { grid-template-columns: 1fr; } .stack-row { grid-template-columns: 1fr; gap: 0.25rem; } }
+@media (max-width: 680px) { .philosophy-row { grid-template-columns: 1fr; gap: .35rem; } .philosophy-row:hover { padding-left: .5rem; } .feature-heading { display: block; } .feature-index { display: block; margin-top: .8rem; } .case-study { grid-template-columns: 2.5rem 1fr; gap: .7rem; } .case-study-columns { grid-template-columns: 1fr; gap: .8rem; } }
 .card {
   border: 1px solid var(--line); border-radius: 4px;
   padding: 1.3rem 1.3rem 1.1rem; background: var(--panel);

@@ -105,7 +105,11 @@ function SystemsWork() {
 }
 
 function Principles() {
-  return <section id="principles" className="section principles"><Eyebrow>How I think</Eyebrow><h2>Engineering judgment is part of the system.</h2><div className="principle-grid">{engineeringPrinciples.map((principle, i) => <article key={principle.title}><span className="principle-number">0{i + 1}</span><h3>{principle.title}</h3><p>{principle.text}</p></article>)}</div></section>;
+  return <section id="principles" className="section principles"><Eyebrow>How I think</Eyebrow><h2>Philosophies for production systems.</h2><p className="section-sub">The principles behind the architecture: concise enough to remember, specific enough to change how I build.</p><div className="philosophy-list">{engineeringPrinciples.map((principle, i) => <article className="philosophy-row" key={principle.title}><span className="philosophy-number">[PHILOSOPHY_0{i + 1}]</span><h3>{principle.title}</h3><p>{principle.text}</p></article>)}</div></section>;
+}
+
+function FeaturedCaseStudies() {
+  return <section className="section featured-case-studies"><div className="feature-heading"><div><Eyebrow>[02] // FLAGSHIP_CASE_STUDIES</Eyebrow><h2>Architectural blueprints.</h2></div><span className="feature-index">VIEW_INDEX // 04 SYSTEMS</span></div><p className="section-sub">The systems I want a hiring team to understand first: the operating problem, the design move, and the evidence of what changed.</p><div className="case-study-list">{systemsWork.cards.slice(0, 4).map((card, i) => <article className="case-study" key={card.title}><div className="case-study-index">0{i + 1}</div><div className="case-study-main"><p className="system-label">{card.label}</p><h3>{card.title}</h3><p className="case-study-summary">{card.contribution}</p><div className="case-study-columns"><div><span className="case-label">THE CONSTRAINT</span><p>{card.problem}</p></div><div><span className="case-label">THE RESULT</span><p>{card.outcome}</p></div></div><div className="case-tags">{card.pattern.split(" · ").map(tag => <span key={tag}>{tag}</span>)}</div></div></article>)}</div></section>;
 }
 
 function Leadership() {
@@ -238,7 +242,7 @@ function ExperienceMap() {
   );
 }
 
-function FeaturedWorkPage() { return <main><Hero /><SystemsWork /></main>; }
+function FeaturedWorkPage() { return <main><Hero /><FeaturedCaseStudies /></main>; }
 function SystemsPage() { return <main><TechnicalProfile /><Topology /><Principles /><Leadership /></main>; }
 function ExperiencePage() { return <main><ExperienceMap /><Leadership /></main>; }
 function ProjectsPage() { return <main><Building /><Writing /></main>; }
@@ -300,11 +304,7 @@ export default function App() {
           <Terminal />
           <TechnicalProfile />
           <SystemsWork />
-          <Principles />
           <ExperienceMap />
-          <Leadership />
-          <Writing />
-          <Building />
           <Work />
         </main>
       )}
