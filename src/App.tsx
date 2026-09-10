@@ -58,6 +58,36 @@ function Hero() {
   );
 }
 
+function Terminal() {
+  const [command, setCommand] = useState("");
+  const [output, setOutput] = useState("Type help to inspect the system.");
+  const run = (value: string) => {
+    const cmd = value.trim().toLowerCase();
+    const responses: Record<string, string> = {
+      help: "experience   systems   stack   contact",
+      experience: "Amazon · SS&C Eze · Apple · UW Foster",
+      systems: "workflow platforms · configuration as code · visible failure",
+      stack: "Java · Python · TypeScript · AWS · Step Functions · DynamoDB",
+      contact: "LinkedIn and GitHub are at the end of the route.",
+    };
+    setOutput(responses[cmd] ?? `command not found: ${cmd || "(empty)"}`);
+    setCommand("");
+  };
+  return <section className="terminal-shell" aria-label="Interactive portfolio terminal">
+    <div className="terminal-bar"><span className="terminal-dot red" /><span className="terminal-dot yellow" /><span className="terminal-dot green" /><span className="terminal-title">akshaya@systems:~</span></div>
+    <div className="terminal-body"><p><span className="prompt">$</span> status --now</p><p className="terminal-output">{output}</p><form onSubmit={event => { event.preventDefault(); run(command); }}><label><span className="prompt">$</span><input value={command} onChange={event => setCommand(event.target.value)} placeholder="try: help" aria-label="Terminal command" /></label></form></div>
+  </section>;
+}
+
+function Topology() {
+  const nodes = ["request", "notify", "approve", "decision", "state"];
+  return <section className="topology-panel" aria-label="Event-driven workflow topology">
+    <div className="topology-heading"><span className="system-label">SYSTEM BLUEPRINT / 01</span><span className="topology-status">● observable path</span></div>
+    <div className="topology-flow">{nodes.map((node, i) => <div className="topology-node-wrap" key={node}><div className="topology-node"><span className="node-index">0{i + 1}</span><strong>{node}</strong><small>{i === 0 ? "command" : i === 1 ? "event" : i === 2 ? "human gate" : i === 3 ? "event" : "projection"}</small></div>{i < nodes.length - 1 && <span className="topology-arrow">→</span>}</div>)}</div>
+    <p className="topology-caption">Every transition is explicit. Events carry the workflow forward, while audit and monitoring make the failure boundary visible.</p>
+  </section>;
+}
+
 function TechnicalProfile() {
   return (
     <section id="signal" className="section technical-profile">
@@ -209,7 +239,7 @@ function ExperienceMap() {
 }
 
 function FeaturedWorkPage() { return <main><Hero /><SystemsWork /></main>; }
-function SystemsPage() { return <main><TechnicalProfile /><Principles /><Leadership /></main>; }
+function SystemsPage() { return <main><TechnicalProfile /><Topology /><Principles /><Leadership /></main>; }
 function ExperiencePage() { return <main><ExperienceMap /><Leadership /></main>; }
 function ProjectsPage() { return <main><Building /><Writing /></main>; }
 function AboutPage() { return <main><Story /><OffClock /><Contact /></main>; }
@@ -267,6 +297,7 @@ export default function App() {
       : (
         <main>
           <Hero />
+          <Terminal />
           <TechnicalProfile />
           <SystemsWork />
           <Principles />

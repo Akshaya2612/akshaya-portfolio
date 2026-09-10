@@ -20,7 +20,7 @@ export const technicalProfile = {
   sub: "Seven years building internal platforms, distributed services, and AI-assisted workflows for teams operating at scale.",
   metrics: [
     { value: "70+", label: "services onboarded" },
-    { value: "1,200+", label: "fulfillment sites" },
+    { value: "Global", label: "fulfillment network" },
     { value: "29", label: "dependent services" },
     { value: "$1.5M", label: "potential loss prevented" },
   ],
@@ -43,6 +43,7 @@ export const systemsWork = {
     { title: "Service onboarding, under an hour", label: "PLATFORM / APPLIED AI", problem: "New-service onboarding depended on scattered, unstructured documentation and took weeks.", contribution: "Designed an LLM-assisted pipeline that parsed service documentation into structured catalog metadata and a self-service workflow.", outcome: "Live across 70+ services in a global fulfillment network, reducing onboarding from weeks to under an hour.", pattern: "Metadata-driven design · document parsing · self-service platform" },
     { title: "Root-cause analysis as a workflow", label: "APPLIED AI / OPERATIONS", problem: "Operations teams spent too much time correlating live system data with scattered technical knowledge.", contribution: "Led an intern to build a secure assistant combining live API data with a 1,500+ document knowledge base.", outcome: "Automated diagnosis across 70+ workflows, with a target of reducing resolution time by 70%. The system was still being productionalized when I left.", pattern: "RAG · semantic search · secure operational tooling" },
     { title: "Governance built into the path", label: "RELIABILITY / PLATFORM", problem: "Self-service logistics workflows created risk when approvals and configuration changes were hard to audit.", contribution: "Architected an event-driven approvals and audit platform with governance guardrails and role-scoped access.", outcome: "Designed to prevent an estimated $1.5M in potential losses from misconfigurations.", pattern: "Event-driven architecture · auditability · access control" },
+    { title: "Events as the system of record", label: "ARCHITECTURE / WORKFLOW", problem: "A configuration request had to move through notification, approval, rejection, retries, and status updates without losing context.", contribution: "Modeled each transition as an observable event: request submitted, notification sent, approval awaited, decision emitted, and configuration state updated.", outcome: "Decoupled workflow steps, preserved an audit trail, and made failure boundaries visible enough to retry or investigate.", pattern: "Event-driven workflows · explicit state transitions · idempotent handlers" },
   ],
 };
 
