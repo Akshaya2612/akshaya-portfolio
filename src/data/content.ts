@@ -7,7 +7,7 @@
 export const identity = {
   name: "Akshaya Jonnalagadda",
   tagline: "I build systems that make complexity legible.",
-  hook: "Senior software and platform engineer with product judgment and applied AI range.",
+  hook: "Software engineer with platform experience, product judgment, and applied AI range.",
   sub: "Engineer of seven years at Amazon and SS&C, now doing an MSIS at UW Foster. I learn how systems work: codebases, orgs, transit maps, and how to make them make sense for everyone else.",
   linkedin: "https://www.linkedin.com/in/akshaya-jonnalagadda-00a30615a/",
   github: "https://github.com/Akshaya2612", // TODO: set
@@ -18,19 +18,12 @@ export const technicalProfile = {
   chapter: "The Signal",
   title: "What I bring to the system",
   sub: "Seven years building internal platforms, distributed services, and AI-assisted workflows for teams operating at scale.",
-  metrics: [
-    { value: "70+", label: "services onboarded" },
-    { value: "13", label: "services in config path" },
-    { value: "29", label: "dependent services" },
-    { value: "$1.5M", label: "potential loss prevented" },
-  ],
   capabilities: [
-    { title: "Platform engineering", text: "Self-service systems, configuration workflows, APIs, metadata-driven design, and developer enablement." },
-    { title: "Distributed systems", text: "Multi-region architecture, event-driven workflows, service integration, authentication, and safe migrations." },
-    { title: "Applied AI", text: "LLM-assisted onboarding, RAG, semantic search, document parsing, and ML prototypes grounded in real operations." },
-    { title: "Technical leadership", text: "Ambiguous problem framing, cross-team alignment, architecture documentation, mentoring, and delivery discipline." },
-  ],
-};
+    { title: "Reusable platforms", text: "Turn manual setup and configuration into repeatable workflows." },
+    { title: "Event-driven systems", text: "Coordinate requests, approvals, and configuration changes." },
+    { title: "Operational visibility", text: "Make failures observable and diagnosable." },
+    { title: "Applied AI", text: "Bring scattered documentation and system data into useful tools." },
+  ],};
 
 export const skillMatrix = [
   { domain: "Distributed workflow systems", focus: "Event-driven state transitions, asynchronous approvals, retries, audit trails, and idempotent handlers." },
@@ -46,11 +39,10 @@ export const systemsWork = {
   title: "Selected engineering systems",
   sub: "A compact index of the platforms and workflows I have shaped. The detailed case studies live on the Featured Work page.",
   cards: [
-    { title: "Configuration as a platform", label: "FULFILLMENT / PLATFORM", problem: "Fulfillment Center setup and reconfiguration depended on repeated manual configuration work across services.", contribution: "Automated configuration updates across 13 services and turned the process into a reusable path for FC setup, regional migration, and FC reconfiguration.", outcome: "Removed approximately one engineer-year of recurring manual work annually. The system remains the path for FC configuration updates today.", pattern: "Infrastructure as code · reusable workflows · maintainability" },
+    { title: "Configuration as a platform", label: "FULFILLMENT / PLATFORM", context: "My team owned initial software setup across Amazon’s global fulfillment network. The team’s platform supported thousands of setup and reconfiguration runs, including repeat changes to existing sites.", problem: "Fulfillment Center setup and reconfiguration depended on repeated manual configuration work across services.", contribution: "Automated configuration updates across 13 services and turned the process into a reusable path for FC setup, regional migration, and FC reconfiguration.", outcome: "Removed approximately one engineer-year of recurring manual work annually. The configuration workflow supports initial site setup, regional migrations, and reconfiguration.", pattern: "Infrastructure as code · reusable workflows · maintainability" },
     { title: "Service onboarding, under an hour", label: "PLATFORM / APPLIED AI", problem: "New-service onboarding depended on scattered, unstructured documentation and took weeks.", contribution: "Designed an LLM-assisted pipeline that parsed service documentation into structured catalog metadata and a self-service workflow.", outcome: "Live across 70+ services in a global fulfillment network, reducing onboarding from weeks to under an hour.", pattern: "Metadata-driven design · document parsing · self-service platform" },
     { title: "Root-cause analysis as a workflow", label: "APPLIED AI / OPERATIONS", problem: "Operations teams spent too much time correlating live system data with scattered technical knowledge.", contribution: "Led an intern to build a secure assistant combining live API data with a 1,500+ document knowledge base.", outcome: "Automated diagnosis across 70+ workflows, with a target of reducing resolution time by 70%. The system was still being productionalized when I left.", pattern: "RAG · semantic search · secure operational tooling" },
     { title: "Governance built into the path", label: "RELIABILITY / PLATFORM", problem: "Self-service logistics workflows created risk when approvals and configuration changes were hard to audit.", contribution: "Architected an event-driven approvals and audit platform with governance guardrails and role-scoped access.", outcome: "Designed to prevent an estimated $1.5M in potential losses from misconfigurations.", pattern: "Event-driven architecture · auditability · access control" },
-    { title: "Events as the system of record", label: "ARCHITECTURE / WORKFLOW", problem: "A configuration request had to move through notification, approval, rejection, retries, and status updates without losing context.", contribution: "Modeled each transition as an observable event: request submitted, notification sent, approval awaited, decision emitted, and configuration state updated.", outcome: "Decoupled workflow steps, preserved an audit trail, and made failure boundaries visible enough to retry or investigate.", pattern: "Event-driven workflows · explicit state transitions · idempotent handlers" },
   ],
 };
 
@@ -64,7 +56,7 @@ export const engineeringPrinciples = [
 export const leadership = {
   chapter: "Technical Leadership",
   title: "The work around the code",
-  items: ["Led an intern and cross-team partners through a secure AI operations assistant launch.", "Coached 10 engineers through continuous-delivery adoption, raising coverage to 95% and reducing release waits to under one day.", "Mentored 4+ junior engineers and organized knowledge-sharing forums across two engineering organizations.", "Reduced security risk across five applications as a designated security certifier."],
+  items: ["Led an intern and cross-team partners in developing a secure AI operations assistant; production rollout was underway when I left.", "Coached 10 engineers through continuous-delivery adoption, raising coverage to 95% and reducing release waits to under one day.", "Mentored 4+ junior engineers and organized knowledge-sharing forums across two engineering organizations.", "Reduced security risk across five applications as a designated security certifier."],
 };
 
 export const stack = [
@@ -222,7 +214,7 @@ export const experience = {
       city: "Hyderabad",
       summary: "Turning ambiguous platform problems into self-service systems for fulfillment teams.",
       owned: "Platform architecture, AI-assisted onboarding, regional routing, configuration lifecycle, and operations tooling.",
-      proof: ["LLM-assisted onboarding for 70+ services across 1,200+ fulfillment sites", "Backward-compatible routing framework adopted by 29 dependent services", "Secure AI operations assistant grounded in a 1,500+ document knowledge base"],
+      proof: ["LLM-assisted onboarding for 70+ services across a global fulfillment network", "Backward-compatible routing framework adopted by 29 dependent services", "Secure AI operations assistant grounded in a 1,500+ document knowledge base"],
       impact: "Made new-service onboarding take under an hour. The operations assistant had a 70% resolution-time reduction target and was still being productionalized when I left in May 2026.",
       signals: ["PM-T", "SDE", "FDE", "Applied Scientist"],
     },
@@ -235,7 +227,7 @@ export const experience = {
       summary: "Building governed, observable delivery systems that teams could safely operate at scale.",
       owned: "Event-driven approvals, auditability, authentication migration, staging strategy, and continuous delivery.",
       proof: ["Event-driven approvals and audit platform with role-scoped access", "Zero-downtime OAuth migration across 4 core and ~70 downstream services", "Production-mirrored validation across 10 environments and ~180 nodes annually"],
-      impact: "Prevented $1.5M in potential losses, cut release cycles from two weeks to under one day, and removed one engineer-year of recurring manual work.",
+      impact: "Designed governance controls to prevent an estimated $1.5M in potential losses. Cut release cycles from two weeks to under one day and removed approximately one engineer-year of recurring manual work annually.",
     },
     {
       id: "ssc-eze",

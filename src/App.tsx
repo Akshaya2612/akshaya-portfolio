@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { MapContainer, TileLayer, Polyline, CircleMarker } from "react-leaflet";
 import movieComparerGif from "./images/Movie Comparer.gif";
 import cookiesImage from "./images/cookies.gif";
@@ -7,7 +7,7 @@ import boardGameImage from "./images/board_game.jpg";
 import readingImage from "./images/reading.jpg";
 import travellingImage from "./images/travelling.jpg";
 import {
-  identity, story, writing, building, work, contact, offClock, technicalProfile,
+  identity, story, writing, building, contact, offClock, technicalProfile,
   experience, systemsWork, engineeringPrinciples, leadership, stack, skillMatrix, Post,
 } from "./data/content";
 
@@ -26,7 +26,8 @@ function useRoute() {
 function usePage() {
   const [hash, setHash] = useState(window.location.hash);
   useEffect(() => { const fn = () => setHash(window.location.hash); window.addEventListener("hashchange", fn); return () => window.removeEventListener("hashchange", fn); }, []);
-  return hash.replace(/^#\/?/, "").split("/")[0] || "home";
+  const page = hash.replace(/^#\/?/, "").split("/")[0];
+  return !page || page === "top" ? "home" : page;
 }
 
 // ================= pieces =================
@@ -35,12 +36,13 @@ function Eyebrow({ children }: { children: ReactNode }) {
 }
 
 function Nav() {
-  const links = [["home", "Home"], ["featured-work", "Featured Work"], ["systems", "Systems"], ["experience", "Experience"], ["projects", "Projects"], ["about", "About"]];
+  const page = usePage();
+  const links = [["home", "Home"], ["featured-work", "Featured Work"], ["systems", "Systems"], ["experience", "Experience"], ["projects", "Lab & Writing"], ["about", "About"]];
   return (
     <nav className="nav">
       <a className="nav-name" href="#top" onClick={() => (window.location.hash = "")}>AJ</a>
       <div className="nav-links">
-        {links.map(([id, label]) => <a key={id} href={id === "home" ? "#top" : `#/${id}`}>{label}</a>)}
+        {links.map(([id, label]) => <a key={id} aria-current={page === id ? "page" : undefined} href={id === "home" ? "#/" : `#/${id}`}>{label}</a>)}
       </div>
     </nav>
   );
@@ -54,34 +56,9 @@ function Hero() {
       <p className="hook">{identity.hook}</p>
       <p className="hero-sub">{identity.sub}</p>
       <p className="hero-name">{identity.name}</p>
+      <div className="hero-links"><a href="#/featured-work">Explore my work →</a><a href="#/systems">Architecture & skills →</a></div>
     </header>
   );
-}
-
-function DossierRibbon() {
-  return <div className="dossier-ribbon"><div><span className="status-light" /> <span>DOSSIER: AKSHAYA-JONNALAGADDA</span><i>/</i><span>INDEX: 2018 → PRESENT</span><i>/</i><span className="ribbon-focus">FOCUS: PLATFORM · DISTRIBUTED SYSTEMS · APPLIED AI</span></div><div><span>EXPERIENCE: 7 YEARS</span><i>|</i><span>BASE: SEATTLE</span><i>|</i><span>UW FOSTER MSIS</span></div></div>;
-}
-
-function OverviewDossier() {
-  const chips = ["Workflow orchestration", "Configuration as code", "AWS Step Functions", "DynamoDB", "Event-driven systems", "Applied AI", "Visible failure modes", "Technical strategy"];
-  return <>
-    <DossierRibbon />
-    <section className="overview-dossier">
-      <div className="overview-grid">
-        <div className="overview-spine">
-          <div className="overview-kicker"><span>[00 // EXECUTIVE SUMMARY]</span><b /> <span>SYSTEMS_EVOLUTION</span></div>
-          <h1>Seven years building workflow systems and financial platforms that people can operate with confidence.</h1>
-          <p className="overview-lede">Software Development Engineer with production backend and distributed systems experience across Amazon Fulfillment Tech and SS&amp;C Eze. I build the paths that turn requests into governed, observable outcomes, then bring product and strategy judgment to what should happen next.</p>
-          <div className="overview-metrics">{technicalProfile.metrics.map(metric => <div className="overview-metric" key={metric.label}><span>{metric.label}</span><strong>{metric.value}</strong></div>)}</div>
-        </div>
-        <aside className="overview-signal">
-          <div className="signal-visual"><div className="signal-grid" /><div className="signal-orbit orbit-one" /><div className="signal-orbit orbit-two" /><div className="signal-core">AJ<span>SYS</span></div><div className="signal-caption"><span>ENGINEERING PHILOSOPHY</span><strong>Operational clarity is a feature.</strong></div></div>
-          <div className="competency-panel"><span className="panel-label">CORE COMPETENCIES</span><div className="competency-chips">{chips.map(chip => <span key={chip}>{chip}</span>)}</div></div>
-        </aside>
-      </div>
-    </section>
-    <Terminal />
-  </>;
 }
 
 function Terminal() {
@@ -131,26 +108,13 @@ function TechnicalProfile() {
       <Eyebrow>{technicalProfile.chapter}</Eyebrow>
       <h2>{technicalProfile.title}</h2>
       <p className="section-sub">{technicalProfile.sub}</p>
-      <div className="metrics-band">{technicalProfile.metrics.map(metric => <div className="metric" key={metric.label}><strong>{metric.value}</strong><span>{metric.label}</span></div>)}</div>
       <div className="capability-grid">{technicalProfile.capabilities.map(capability => <article className="capability" key={capability.title}><span className="capability-marker">+</span><h3>{capability.title}</h3><p>{capability.text}</p></article>)}</div>
     </section>
   );
 }
 
-function SystemsWork() {
-  return <section id="systems" className="section systems-work"><Eyebrow>{systemsWork.chapter}</Eyebrow><h2>{systemsWork.title}</h2><p className="section-sub">{systemsWork.sub}</p><div className="system-grid">{systemsWork.cards.map(card => <article className="system-card" key={card.title}><p className="system-label">{card.label}</p><h3>{card.title}</h3><p><strong>Problem:</strong> {card.problem}</p><p><strong>Contribution:</strong> {card.contribution}</p><p className="system-outcome"><strong>Outcome:</strong> {card.outcome}</p><p className="system-pattern">{card.pattern}</p></article>)}</div></section>;
-}
-
-function HomeWorkPreview() {
-  return <section className="section home-preview"><div className="preview-heading"><div><Eyebrow>[02] // SELECTED_WORK</Eyebrow><h2>Two systems worth opening.</h2></div><a href="#/featured-work">View case studies →</a></div><div className="preview-grid">{systemsWork.cards.slice(0, 2).map(card => <article className="preview-card" key={card.title}><p className="system-label">{card.label}</p><h3>{card.title}</h3><p>{card.contribution}</p><span>{card.pattern}</span></article>)}</div></section>;
-}
-
-function ExperienceSnapshot() {
-  return <section className="section experience-snapshot"><div className="preview-heading"><div><Eyebrow>[03] // EXPERIENCE</Eyebrow><h2>Production systems, then product judgment.</h2></div><a href="#/experience">Open experience →</a></div><div className="snapshot-list">{experience.stops.slice(0, 4).map(stop => <div className="snapshot-row" key={stop.id}><span>{stop.dates}</span><strong>{stop.company}</strong><em>{stop.title}</em></div>)}</div></section>;
-}
-
 function ExperienceTrackRecord() {
-  return <section className="section track-record"><div className="track-heading"><div><Eyebrow>[01 // CHRONOLOGY]</Eyebrow><h2>Production track record.</h2></div><p>Roles, ownership, and impact across the systems that shaped how I work.</p></div><div className="track-list">{experience.stops.map((stop, i) => <article className="track-card" key={stop.id}><div className="track-meta"><span className="track-number">0{i + 1}</span><span className="track-dates">{stop.dates}</span><strong>{stop.title}</strong><b>{stop.company}</b><small>{stop.city}</small></div><div className="track-content"><span className="track-kicker">PRIMARY SCOPE</span><h3>{stop.summary}</h3><p>{stop.owned}</p><div className="track-proof"><div><span className="track-kicker">EVIDENCE</span><ul>{stop.proof.map(item => <li key={item}>{item}</li>)}</ul></div><div className="track-impact"><span className="track-kicker">IMPACT</span><p>{stop.impact}</p></div></div></div></article>)}</div></section>;
+  return <section className="section track-record"><Eyebrow>Roles & responsibilities</Eyebrow><div className="track-list">{experience.stops.map(stop => <article className="track-card" key={stop.id}><div className="track-meta"><span className="track-dates">{stop.dates}</span><strong>{stop.title}</strong><b>{stop.company}</b><small>{stop.city}</small></div><div className="track-content"><span className="track-kicker">ROLE FOCUS</span><h3>{stop.summary}</h3><p>{stop.owned}</p>{stop.id === "amazon-platforms" && <a className="role-work-link" href="#/featured-work">Read the engineering case studies →</a>}{stop.id === "ssc-eze" && <p className="role-evidence">Modernized a Pascal/Delphi broker component and implemented inbound FIX support for dark-pool trading and multi-broker routing.</p>}</div></article>)}</div></section>;
 }
 
 function Principles() {
@@ -158,11 +122,19 @@ function Principles() {
 }
 
 function FeaturedCaseStudies() {
-  return <section className="section featured-case-studies"><div className="feature-heading"><div><Eyebrow>[02] // FLAGSHIP_CASE_STUDIES</Eyebrow><h2>Architectural blueprints.</h2></div><span className="feature-index">VIEW_INDEX // 04 SYSTEMS</span></div><p className="section-sub">The systems I want a hiring team to understand first: the operating problem, the design move, and the evidence of what changed.</p><div className="case-study-list">{systemsWork.cards.slice(0, 4).map((card, i) => <article className="case-study" key={card.title}><div className="case-study-index">0{i + 1}</div><div className="case-study-main"><p className="system-label">{card.label}</p><h3>{card.title}</h3><p className="case-study-summary">{card.contribution}</p><div className="case-study-columns"><div><span className="case-label">THE CONSTRAINT</span><p>{card.problem}</p></div><div><span className="case-label">THE RESULT</span><p>{card.outcome}</p></div></div><div className="case-tags">{card.pattern.split(" · ").map(tag => <span key={tag}>{tag}</span>)}</div></div></article>)}</div></section>;
+  return <section className="section featured-case-studies"><div className="feature-heading"><div><Eyebrow>[02] // FLAGSHIP_CASE_STUDIES</Eyebrow><h2>Architectural blueprints.</h2></div><span className="feature-index">VIEW_INDEX // 04 SYSTEMS</span></div><p className="section-sub">The systems I want a hiring team to understand first: the operating problem, the design move, and the evidence of what changed.</p><div className="case-study-list">{systemsWork.cards.map((card, i) => <article className="case-study" key={card.title}><div className="case-study-index">0{i + 1}</div><div className="case-study-main"><p className="system-label">{card.label}</p><h3>{card.title}</h3>{"context" in card && <p className="case-study-context"><span className="case-label">TEAM CONTEXT</span>{card.context}</p>}<span className="case-label">MY CONTRIBUTION</span><p className="case-study-summary">{card.contribution}</p><div className="case-study-columns"><div><span className="case-label">THE CONSTRAINT</span><p>{card.problem}</p></div><div><span className="case-label">THE RESULT</span><p>{card.outcome}</p></div></div><div className="case-tags">{card.pattern.split(" · ").map(tag => <span key={tag}>{tag}</span>)}</div></div></article>)}</div></section>;
 }
 
 function Leadership() {
-  return <section id="leadership" className="section leadership"><Eyebrow>{leadership.chapter}</Eyebrow><h2>{leadership.title}</h2><ul className="leadership-list">{leadership.items.map(item => <li key={item}>{item}</li>)}</ul><div className="stack-list">{stack.map(row => <div className="stack-row" key={row.group}><strong>{row.group}</strong><span>{row.items}</span></div>)}</div></section>;
+  return <section id="leadership" className="section leadership"><Eyebrow>{leadership.chapter}</Eyebrow><h2>{leadership.title}</h2><ul className="leadership-list">{leadership.items.map(item => <li key={item}>{item}</li>)}</ul></section>;
+}
+
+function Stack() {
+  return <section className="section"><Eyebrow>Tools & languages</Eyebrow><h2>The implementation toolkit.</h2><div className="stack-list">{stack.map(row => <div className="stack-row" key={row.group}><strong>{row.group}</strong><span>{row.items}</span></div>)}</div></section>;
+}
+
+function PageIntro({ title, description }: { title: string; description: string }) {
+  return <header className="section page-intro"><h1>{title}</h1><p className="section-sub">{description}</p></header>;
 }
 
 function Story() {
@@ -246,54 +218,9 @@ function Building() {
   );
 }
 
-function Work() {
-  return (
-    <section id="work" className="section work">
-      <Eyebrow>{work.chapter}</Eyebrow>
-      <h2>{work.title}</h2>
-      <p className="prose">{work.line}</p>
-      <a className="cta" href={work.cta.url} target="_blank" rel="noreferrer">{work.cta.label}</a>
-    </section>
-  );
-}
-
-function ExperienceMap() {
-  const [selected, setSelected] = useState(experience.stops[0].id);
-  const rowRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  useEffect(() => {
-    const rows = experience.stops.map(stop => rowRefs.current[stop.id]).filter(Boolean) as HTMLDivElement[];
-    const observer = new IntersectionObserver(entries => {
-      const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (visible) setSelected((visible.target as HTMLElement).dataset.id ?? experience.stops[0].id);
-    }, { rootMargin: "-30% 0px -45%", threshold: [0.2, 0.5, 0.8] });
-    rows.forEach(row => observer.observe(row));
-    return () => observer.disconnect();
-  }, []);
-  return (
-    <section id="experience" className="section experience-section">
-      <Eyebrow>{experience.chapter}</Eyebrow>
-      <h2>{experience.title}</h2>
-      <p className="section-sub">{experience.sub}</p>
-      <div className="experience-map" aria-label="Career map">
-        <div className="map-route" aria-hidden="true"><svg className="route-wave" viewBox="0 0 100 1000" preserveAspectRatio="none"><path d="M50 0 C8 55 8 95 50 150 C92 205 92 245 50 300 C8 355 8 395 50 450 C92 505 92 545 50 600 C8 655 8 695 50 750 C92 805 92 845 50 900 C8 955 8 985 50 1000" /></svg></div>
-        <div className="experience-list" aria-label="Professional experience stops">
-          {experience.stops.map((stop, i) => (
-            <div className={`experience-row ${selected === stop.id ? "active" : ""}`} data-id={stop.id} ref={el => { rowRefs.current[stop.id] = el; }} key={stop.id}>
-              <div className="map-stop">
-                <span className="stop-dot">{i + 1}</span>
-                <span className="stop-copy"><strong>{stop.company}</strong><small>{stop.title}</small><small>{stop.city} · {stop.dates}</small></span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function FeaturedWorkPage() { return <main><Hero /><FeaturedCaseStudies /></main>; }
-function SystemsPage() { return <main><TechnicalProfile /><SkillMatrix /><Topology /><SystemsWork /><Principles /><Leadership /></main>; }
-function ExperiencePage() { return <main><DossierRibbon /><ExperienceTrackRecord /><ExperienceMap /><Leadership /></main>; }
+function FeaturedWorkPage() { return <main><PageIntro title="Featured engineering work." description="Configuration automation, service onboarding, and operational tooling at Amazon. Team context, my contribution, and outcomes for each system." /><FeaturedCaseStudies /></main>; }
+function SystemsPage() { return <main><PageIntro title="Systems & architecture." description="How I structure workflows, make failure visible, and build for the next change." /><SkillMatrix /><Topology /><Principles /><Stack /></main>; }
+function ExperiencePage() { return <main><PageIntro title="Career & experience." description="From enterprise financial software to fulfillment platforms, followed by graduate study at UW Foster." /><ExperienceTrackRecord /><Leadership /></main>; }
 function ProjectsPage() { return <main><Building /><Writing /></main>; }
 function AboutPage() { return <main><Story /><OffClock /><Contact /></main>; }
 
@@ -337,6 +264,7 @@ export default function App() {
   const slug = useRoute();
   const page = usePage();
   const post = slug ? writing.posts.find(p => p.slug === slug && !p.external) : null;
+  useEffect(() => { window.scrollTo({ top: 0, behavior: "instant" }); }, [page]);
   return (
     <>
       <Nav />
@@ -349,10 +277,9 @@ export default function App() {
       : page === "about" ? <AboutPage />
       : (
         <main>
-          <OverviewDossier />
-          <HomeWorkPreview />
-          <ExperienceSnapshot />
-          <Work />
+          <Hero />
+          <TechnicalProfile />
+          <Terminal />
         </main>
       )}
       {!post && page === "home" && <Contact />}
