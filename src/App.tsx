@@ -181,6 +181,9 @@ function Story() {
           {geoCities.map((city, i) => <CircleMarker key={`${city.name}-${i}`} center={city.coords} radius={3.5} pathOptions={{ color: "#2f9e7d", weight: 1.5, fillColor: "#2f9e7d", fillOpacity: 1 }} />)}
         </MapContainer>
       </div>
+      <p className="prose">{story.approach}</p>
+      <p className="prose">{story.current}</p>
+      <a className="role-work-link" href={story.workLink.url}>{story.workLink.label}</a>
     </section>
   );
 }

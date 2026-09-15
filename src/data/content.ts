@@ -73,8 +73,10 @@ export const story = {
   paras: [
     "I grew up across eight cities in India and the US, always the new kid, always mid-decode. New school, new unspoken rules, new system to figure out. I got fast at it, and then I became the person who explained the rules to everyone else.",
     "I thought that instinct meant medicine. Then I watched enterprise dispatch software crash and saw field crews stall, unable to do their jobs. A system isn't just software. It is how people get their life's work done. So I skipped med school and started diagnosing systems instead.",
-    "Off the clock, the instinct doesn't switch off: I bake without following the recipe, learn board game rulebooks for fun, read history and science for the how, and plan the trip in a spreadsheet. I'm always learning a new system. I usually end up running it.",
   ],
+  approach: "That instinct shows up in my engineering: document what someone would otherwise have to rediscover, automate the repeatable parts, and make problems visible. At Amazon and SS&C, I worked on software that other people depended on to get their jobs done. Making it understandable and maintainable mattered as much as getting it to work.",
+  current: "After seven years in engineering at Amazon and SS&C, I'm pursuing an MSIS at UW Foster in Seattle. I'm building on that experience with a closer look at product decisions, data, and technology strategy: how to decide what is worth building, and how to make it useful to the people who rely on it.",
+  workLink: { label: "See how that translates into my work →", url: "#/featured-work" },
   cities: ["Andhra Pradesh", "Chennai", "Philadelphia", "Sunnyvale", "San Diego", "Chandigarh", "Chennai", "Hyderabad", "Seattle"],
 };
 
@@ -275,11 +277,11 @@ export const contact = {
 
 export const offClock = {
   chapter: "Off the Clock",
-  title: "The instinct does not switch off.",
+  title: "A few things I make time for.",
   sub: "A few things I follow for no practical reason, except that they make the world more interesting.",
   cards: [
     { symbol: "✦", title: "Bake without a recipe", text: "A little intuition, a little controlled chaos, and usually something worth sharing.", image: "cookies" },
-    { symbol: "◈", title: "Learn the rulebook", text: "Board games are systems with better snacks and much more dramatic edge cases.", image: "board_game" },
+    { symbol: "◈", title: "Learn the rulebook", text: "I read board game rulebooks for fun. Snacks and a little friendly competition help too.", image: "board_game" },
     { symbol: "↗", title: "Read the map", text: "Transit maps, city histories, and the quiet logic behind how people move.", image: "travelling" },
     { symbol: "⌁", title: "Keep reading", text: "Books, science, and rabbit holes that turn a five-minute question into an evening.", image: "reading" },
   ],
