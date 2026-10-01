@@ -7,8 +7,8 @@
 export const identity = {
   name: "Akshaya Jonnalagadda",
   tagline: "I build systems that make complexity legible.",
-  hook: "Backend engineer who builds the human side of automation: the reviews, approvals, and self-service paths that let teams move fast without breaking things.",
-  sub: "Engineer of seven years at Amazon and SS&C, now doing a master's at UW Foster. I learn how systems work: codebases, orgs, transit maps, and how to make them make sense for everyone else.",
+  hook: "I ask two questions of every system: where is a person doing by hand what a machine should, and where is a machine deciding something only a person should. Seven years at Amazon and SS&C, most of them answering those two questions for the software behind fulfillment-site launches.",
+  sub: "Now doing a master's at UW Foster. I learn how systems work, whether that is a codebase, an org, or a transit map, and then make them make sense for everyone else. A manager once wrote that I keep asking how manual effort can be eliminated and how systems can be made more intuitive for the people using them. That is the fairest one-line description of me I have.",
   linkedin: "https://www.linkedin.com/in/akshaya-jonnalagadda-00a30615a/",
   github: "https://github.com/Akshaya2612",
   welcome: "Welcome! Everything is figure-out-able.",
@@ -17,7 +17,7 @@ export const identity = {
 export const technicalProfile = {
   chapter: "The Signal",
   title: "What I bring to the system",
-  sub: "Seven years building internal platforms, event-driven workflows, and AI-assisted tools, and working out what the people using them actually need before building it.",
+  sub: "Four habits, each with the moment that made it a habit.",
 };
 
 // One list, three uses: home-page capabilities (title + summary),
@@ -34,27 +34,27 @@ export type SystemsDomain = {
 export const systemsDomains: SystemsDomain[] = [
   {
     title: "Build once, reuse often",
-    summary: "Turn repeated manual setup into a path the next team can run without me.",
-    principle: "Automate the repeat, keep the judgment. Pod assignment went from a hand-built code change to generated configuration, and the human approval stayed.",
+    summary: "Pod assignment for 13 fulfillment services was a hand-built code change per site. I turned it into generated configuration: 10–20 site launches a week with no manual step, one engineer-year a year back.",
+    principle: "Automate the repeat, keep the judgment. When I automated pod assignment I kept the approval step on purpose, and reviewers have caught the algorithm being wrong since.",
     practice: "Self-service workflows, configuration as code, metadata-driven onboarding, reusable infrastructure.",
     stat: { value: "7–8 h → min", label: "deploy and rollback time per service, and one engineer-year a year back" },
     evidence: [
       { label: "Configuration as a platform", href: "#configuration-platform" },
-      { label: "Service onboarding", href: "#service-onboarding" },
+      { label: "Service registry", href: "#service-onboarding" },
     ],
   },
   {
     title: "Make failure visible",
-    summary: "Put approvals in the path, and keep each review small enough that a person actually reads it.",
-    principle: "A review nobody reads is not a control. One review per pod, one site per line, auto-rejected after seven days of silence.",
+    summary: "A self-service workflow was once set up like the wrong type and failed in production, because nothing required a human look. I built the approval gate that every node address change across AFT and SCOT now passes through.",
+    principle: "Approved is not applied, and silence is not a yes. One review per pod, one site per line, auto-rejected after seven days. A review nobody reads is not a control.",
     practice: "Event-driven state transitions, asynchronous approvals, retries, audit trails, role-scoped access.",
     stat: { value: "7 days", label: "before an unanswered review rejects itself; every node address change across AFT and SCOT passes this gate" },
     evidence: [{ label: "Governance built into the path", href: "#governance" }],
   },
   {
     title: "Design for safe change",
-    summary: "Migrate live systems without asking the teams that depend on them to stop, or to notice.",
-    principle: "Migrate under the teams that depend on you without them noticing. Backward compatibility first, then cut over.",
+    summary: "Four core and ~70 downstream services moved to OAuth with zero downtime, six months early. The first cross-region migration I led became the team's written blueprint for the rest.",
+    principle: "Demo in beta before you roll out. I learned this in a retro: our customers' feedback was arriving after production deployment, which is a bug in the process, not in the customer.",
     practice: "Backward-compatible interfaces, production-mirrored validation, zero-downtime migrations, CI/CD, test automation.",
     stat: { value: "~70 services", label: "moved to OAuth with zero downtime, six months ahead of schedule; 29 adopted the routing framework" },
     evidence: [
@@ -64,12 +64,12 @@ export const systemsDomains: SystemsDomain[] = [
   },
   {
     title: "Make knowledge executable",
-    summary: "Turn scattered documentation and live system data into tools people use mid-task.",
-    principle: "If the answer lives in a doc or one engineer's head, it is not a platform yet. Put it where the work happens.",
+    summary: "A registry change that took a developer 3–4 hours now takes the owning team 3–4 minutes, across 800+ services. The roughly 10 incidents a month from orphaned records stopped.",
+    principle: "If the answer lives in one engineer's head, it is not a platform yet. I wrote the team's CDK and testing guidelines so the next engineer, or the away team, did not need me in the room.",
     practice: "Document parsing, structured metadata extraction, RAG, semantic search, operational assistants.",
-    stat: { value: "weeks → min", label: "to draft a service catalog entry; 10–13 searchable-question tickets per on-call rotation targeted" },
+    stat: { value: "3–4 h → 3–4 min", label: "per registry change, developer time to self-service, across 800+ services" },
     evidence: [
-      { label: "Service onboarding", href: "#service-onboarding" },
+      { label: "Service registry", href: "#service-onboarding" },
       { label: "Root-cause analysis", href: "#root-cause-analysis" },
     ],
   },
@@ -99,11 +99,11 @@ export const systemsWork = {
       id: "configuration-platform",
       title: "Configuration as a platform",
       label: "AMAZON / FULFILLMENT PLATFORM",
-      context: "The first of two maker-checker systems I owned, used by the Amazon Fulfillment Technologies (AFT) services that run pod-based load balancing. Every new fulfillment site had to be assigned to a serving pod, and that assignment lived in code.",
+      context: "Part of a program to cut fulfillment-center setup from 6 weeks to 3 by removing manual configuration across 51 Amazon Fulfillment Technologies (AFT) services. I owned the 13 that use pod-based load balancing: every new site had to be assigned to a serving pod, and that assignment lived in code.",
       problem: "Assignments were hand-built code changes across 13 services. Sites were allocated to the wrong pod or missed entirely, changes collided with in-flight deployments, and each change took 7–8 hours per service to propagate through the pipeline.",
       hardCall: "Move the assignment out of code into a configuration store that deploys on its own, and keep human approval. With deploys this fast, the review is where a bad change gets stopped, so I made each review small: one per pod, and only when that pod changes.",
       contribution: "Automated pod selection and configuration generation for 13 services, and built the review loop around it. A conflict or a rejection regenerates the review from the latest configuration instead of patching a stale one. Only the owning team can approve, anyone can view, and an unanswered review rejects itself after seven days. I also built a diff view where each line is one site added to or removed from a pod.",
-      outcome: "In production, handling 10–20 site launches and reconfigurations a week. Removed the manual work in allocation, about one engineer-year every year; deploys and rollbacks take minutes instead of 7–8 hours per service. Reviewers caught bad allocations and stale changes before they deployed, which is what the review was there for.",
+      outcome: "In production, handling 10–20 site launches and reconfigurations a week, and extended to site deprecation with minimal change. Eliminated 13 manual change requests per launch cycle, 3–4 cycles a year: about one engineer-year every year. Deploys and rollbacks take minutes instead of 7–8 hours per service. Reviewers caught bad allocations and stale changes before they deployed, which is what the review was there for.",
       image: { src: "diagrams/review-loop.png", alt: "Review loop: a pod change generates a review; approval deploys in minutes; rejection, conflict, or seven days of silence regenerates it from the latest configuration." },
       pattern: "Configuration as data · maker-checker · reviewable diffs",
       related: { title: "Who is going to read this anyway?", url: "https://medium.com/@j.akshaya1997/who-is-going-to-read-this-anyway-5116ecd69c73" },
@@ -113,10 +113,10 @@ export const systemsWork = {
       title: "Governance built into the path",
       label: "AMAZON / RELIABILITY / PLATFORM",
       context: "The second maker-checker system: a self-service workflow engine for configuration changes that downstream systems depend on. It started with launches and reconfiguration for Amazon's Quick Commerce nodes and address changes for fulfillment centers.",
-      problem: "When my team ran these workflows, the checks lived in emails and tickets, and we controlled what ran when. Making workflows self-service meant anyone could define one whose inputs would write straight into downstream systems.",
+      problem: "Before self-service, experts built each workflow in meetings; one took up to 8 weeks. Self-service fixed the wait and exposed a gap: a workflow was once configured like the wrong type and failed tasks in production, because nothing required a human look before it ran. Address changes in particular needed business context no automated check had.",
       hardCall: "Self-service without giving up control. I put two gates in the path: a new workflow is approved once before it can be published, and every run's inputs are approved before any data reaches a downstream system.",
       contribution: "With my team, built the engine: users define workflows by drag and drop, and each step is a downstream API call. I built the form layer that collects each step's inputs, and designed and built the approvals framework that routes new workflows and run inputs to my team and the other owners for sign-off.",
-      outcome: "In weekly production use. Every address change for a first-, middle-, or last-mile node (fulfillment centers, sort centers, delivery stations) across AFT and Supply Chain Optimization Technologies (SCOT) now passes through this approvals system. No value reaches a downstream system until the required owners sign off, and every decision is on record. Approvers caught wrong addresses before they propagated, and wrong steps in new workflows.",
+      outcome: "Workflow creation and approval went from 8 weeks to 1. Every address change for a first-, middle-, or last-mile node (fulfillment centers, sort centers, delivery stations) across AFT and Supply Chain Optimization Technologies (SCOT) now passes through this approvals system. No value reaches a downstream system until the required owners sign off, and every decision is on record. Approvers caught wrong addresses before they propagated, and wrong steps in new workflows.",
       aside: { label: "Under the hood: the form layer", text: "The form renders each step's inputs from the workflow definition itself, so a new workflow needs no new UI. Every downstream API wanted different input types, fields depended on each other (one answer changed the options for the next), and the validation rules lived in different systems. The form pulls those together, with value checks and auto-population, so malformed input never reaches a reviewer." },
       image: { src: "diagrams/two-gates.png", alt: "Two approval gates: once when a workflow is created, and on every run after the form validates the inputs." },
       pattern: "Self-service workflows · approval gates · dynamic forms · auditability",
@@ -124,12 +124,13 @@ export const systemsWork = {
     },
     {
       id: "service-onboarding",
-      title: "Service onboarding, without the wait",
+      title: "Service registry, self-service",
       label: "PLATFORM / APPLIED AI",
-      problem: "Onboarding a new service meant an engineer reading scattered, unstructured documentation and hand-building its catalog entry. It took weeks, and teams had no way to do it themselves.",
-      hardCall: "Ship the self-service part first. Letting teams add and edit their own entries through the UI removed the queue on day one; the LLM parsing that drafts an entry from existing documentation came second, as a tool for the team rather than a gate on the workflow.",
-      contribution: "Built and shipped the UI that lets teams add and edit their own service entries, and built an LLM-assisted tool that parses service documentation into structured catalog metadata so my team no longer drafts entries by hand.",
-      outcome: "In production: teams onboard and update their own services through the UI instead of waiting on an engineer. The parsing tool turns existing documentation into a draft entry in minutes.",
+      context: "The registry that 800+ fulfillment services depend on for how they are called. Every change went through a developer on my team.",
+      problem: "Each registry change took a developer 3–4 hours of hand edits, and partial edits left orphaned records that caused about 10 operational incidents a month. Teams had no way to manage their own entries.",
+      hardCall: "Ship the self-service portal first, with transactional consistency across the three-level configuration hierarchy so a half-finished change cannot exist. The LLM tool that drafts an entry from existing documentation came second, as a tool for the team rather than a gate on the workflow.",
+      contribution: "Designed and built the portal end to end: backend APIs with full lifecycle management, the UI, and a reusable component architecture that cut code duplication 60% and future build time 30–40%. Built an LLM-assisted tool that parses service documentation into a draft entry.",
+      outcome: "3–4 hours of developer time became 3–4 minutes of self-service, the monthly incidents from orphaned records stopped, and the registry scales to 800+ services. The parsing tool drafts an entry from existing documentation in minutes.",
       pattern: "Metadata-driven design · document parsing · self-service platform",
     },
     {
@@ -158,7 +159,7 @@ export const systemsWork = {
 export const leadership = {
   chapter: "Technical Leadership",
   title: "The work around the code",
-  items: ["Scoped a secure AI operations assistant and directed the intern who built it, working with cross-team partners; production rollout was underway when I left.", "Coached my team through continuous-delivery adoption, raising test coverage to 95% and cutting release waits to under one day.", "Mentored junior engineers and organized knowledge-sharing forums across engineering organizations.", "Reduced security risk across the applications I certified as a designated security certifier."],
+  items: ["Scoped a secure AI operations assistant and directed the intern who built it; championed AI tooling for the team and authored the requirements for a natural-language workflow assistant.", "Led 10 engineers through continuous-deployment adoption as an away team: wrote the acceptance criteria, ran daily unblock sessions, raised coverage to 95%, cut release waits from two weeks to under a day.", "Wrote the team's CDK and unit-testing guidelines, ran the knowledge-sharing forum, and buddied new engineers through onboarding.", "Designated security certifier for 5 applications; led a knowledge-transfer session on the configuration platform that was cited in my promotion."],
 };
 
 export const stack = [
@@ -331,8 +332,8 @@ export const experience = {
       city: "Hyderabad",
       summary: "Turning ambiguous platform problems into self-service systems fulfillment teams could run without us.",
       owned: "Platform architecture, AI-assisted onboarding, regional routing, configuration lifecycle, and operations tooling.",
-      proof: ["Self-service UI for service onboarding, plus an LLM-assisted tool that drafts catalog entries from documentation", "Backward-compatible routing framework adopted by dependent services without breaking changes", "Secure AI operations assistant grounded in live system data and the team's knowledge base"],
-      impact: "Teams onboard and update their own services through the UI instead of waiting on an engineer. The operations assistant was in production rollout when I left in May 2026.",
+      proof: ["Service registry portal: 3–4 hours of developer time to 3–4 minutes of self-service across 800+ services; ~10 monthly incidents from orphaned records eliminated", "Led the team's first cross-region service migration; the write-up became the blueprint for the rest of the org", "Authored the requirements for a natural-language workflow assistant and led the team code-a-thon that built the proof of concept"],
+      impact: "Teams manage their own registry entries instead of waiting on an engineer. Migrated the platform's web infrastructure to CDK with zero downtime to close a high-severity vulnerability. The AI operations assistant was in production rollout when I left in May 2026.",
       signals: ["PM-T", "SDE", "FDE", "Applied Scientist"],
     },
     {
@@ -344,8 +345,8 @@ export const experience = {
       city: "Hyderabad",
       summary: "Making automation safe to hand to other people: approvals, audit trails, and reviews designed to be read.",
       owned: "Event-driven approvals, auditability, authentication migration, staging strategy, and continuous delivery.",
-      proof: ["Two maker-checker systems: automated configuration generation, and a self-service workflow engine with approval gates", "Zero-downtime OAuth migration across core and downstream services", "Production-mirrored validation environments for pre-release testing"],
-      impact: "Launched the sign-off workflow into weekly production use. Cut release cycles from two weeks to under one day and removed about one engineer-year of recurring manual work every year.",
+      proof: ["Two maker-checker systems: pod assignment as generated configuration for 13 services, and an approvals framework that cut workflow creation from 8 weeks to 1", "Led 10 engineers to full continuous deployment: integration test coverage 5% → 95%, release waits 2 weeks → under a day", "Opened last-mile site launches in the EU and Japan by rebuilding cross-region connectivity: 31 EU sites live, 30% space savings, 15% throughput gain, 4 hours a week back per manager"],
+      impact: "Stood up production-equivalent test environments for last-mile services: 10 test sites in 2024, targeting the 46% of bad deployments that had been causing incidents. Zero-downtime OAuth migration across 4 core and ~70 downstream services, six months early.",
     },
     {
       id: "ssc-eze",
