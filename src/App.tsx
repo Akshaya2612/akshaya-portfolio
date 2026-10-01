@@ -10,7 +10,7 @@ import amazonPhoto from "./images/amazon.jpg";
 import portrait from "./images/portrait.jpg";
 import {
   identity, story, writing, building, contact, offClock, technicalProfile,
-  experience, systemsWork, systemsDomains, leadership, stack, Post,
+  experience, systemsWork, systemsDomains, leadership, stack, Post, Experience,
 } from "./data/content";
 
 // ================= tiny hash router for posts =================
@@ -25,11 +25,21 @@ function useRoute() {
   return m ? m[1] : null;
 }
 
-function usePage() {
-  const [hash, setHash] = useState(window.location.hash);
-  useEffect(() => { const fn = () => setHash(window.location.hash); window.addEventListener("hashchange", fn); return () => window.removeEventListener("hashchange", fn); }, []);
-  const page = hash.replace(/^#\/?/, "").split("/")[0];
-  return !page || page === "top" ? "home" : page;
+// Single scrolling page: sections are anchors; this tracks which one is in view for the nav.
+const SECTIONS = [["top", "Home"], ["work", "Work"], ["how-i-build", "How I build"], ["experience", "Experience"], ["lab", "Lab & Writing"], ["about", "About"]] as const;
+function useActiveSection() {
+  const [active, setActive] = useState("top");
+  useEffect(() => {
+    const els = SECTIONS.map(([id]) => document.getElementById(id)).filter((el): el is HTMLElement => !!el);
+    if (!els.length) return;
+    const io = new IntersectionObserver(entries => {
+      const visible = entries.filter(e => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+      if (visible[0]) setActive(visible[0].target.id);
+    }, { rootMargin: "-40% 0px -55% 0px" });
+    els.forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+  return active;
 }
 
 // ================= pieces =================
@@ -38,13 +48,12 @@ function Eyebrow({ children }: { children: ReactNode }) {
 }
 
 function Nav() {
-  const page = usePage();
-  const links = [["home", "Home"], ["featured-work", "Featured Work"], ["systems", "Systems"], ["experience", "Experience"], ["projects", "Lab & Writing"], ["about", "About"]];
+  const active = useActiveSection();
   return (
     <nav className="nav">
-      <a className="nav-name" href="#top" onClick={() => (window.location.hash = "")}>AJ</a>
+      <a className="nav-name" href="#top">AJ</a>
       <div className="nav-links">
-        {links.map(([id, label]) => <a key={id} aria-current={page === id ? "page" : undefined} href={id === "home" ? "#/" : `#/${id}`}>{label}</a>)}
+        {SECTIONS.map(([id, label]) => <a key={id} aria-current={active === id ? "page" : undefined} href={`#${id}`}>{label}</a>)}
       </div>
     </nav>
   );
@@ -59,7 +68,7 @@ function Hero() {
         <p className="hook">{identity.hook}</p>
         <p className="hero-sub">{identity.sub}</p>
         <p className="hero-name">{identity.name}</p>
-        <div className="hero-links"><a href="#/featured-work">Explore my work →</a><a href="#/systems">Architecture & skills →</a></div>
+        <div className="hero-links"><a href="#work">See the work →</a><a href="#how-i-build">How I build →</a></div>
       </div>
       <img className="hero-portrait" src={portrait} alt={identity.name} width="640" height="640" />
     </header>
@@ -81,7 +90,7 @@ function Terminal() {
     }
     const responses: Record<string, string[]> = {
       help: ["Available CLI directives:", "• akshaya.status : Ingest current portfolio stats", "• stack         : Print verified production languages & tools", "• contact       : Print public routing links", "• clear         : Flush current display buffers"],
-      "akshaya.status": ["TELEMETRY // NOMINAL", "systems shaped: platform workflows · distributed services · applied AI", "current focus: MSIS · product judgment · technical strategy"],
+      "akshaya.status": ["TELEMETRY // NOMINAL", "systems shaped: platform workflows · distributed services · applied AI", "current focus: master's at UW Foster · product judgment · technical strategy"],
       stack: ["LANGUAGES  // Python · Java · TypeScript · C# · SQL", "CLOUD      // Lambda · Step Functions · DynamoDB · EventBridge · S3 · CDK", "SYSTEMS    // REST · CI/CD · test automation · CloudWatch · RAG"],
       contact: ["PUBLIC ROUTES", "linkedin  → linkedin.com/in/akshaya-jonnalagadda-00a30615", "github    → github.com/Akshaya2612"],
     };
@@ -105,16 +114,23 @@ function TechnicalProfile() {
   );
 }
 
+function Logo({ stop }: { stop: Experience }) {
+  // Logos live in public/logos/<file>; if the file is missing, fall back to a monogram so the layout holds.
+  const [failed, setFailed] = useState(false);
+  if (!stop.logo || failed) return <span className="track-logo track-logo-mono" aria-hidden="true">{stop.company.split(/[^A-Za-z]+/).filter(w => w && w[0] === w[0].toUpperCase()).slice(0, 2).map(w => w[0]).join("")}</span>;
+  return <img className="track-logo" src={`logos/${stop.logo}`} alt={`${stop.company} logo`} loading="lazy" onError={() => setFailed(true)} />;
+}
+
 function ExperienceTrackRecord() {
-  return <section className="section track-record"><Eyebrow>Roles & responsibilities</Eyebrow><div className="track-list">{experience.stops.map(stop => <article className="track-card" key={stop.id}><div className="track-meta"><span className="track-dates">{stop.dates}</span><strong>{stop.title}</strong><b>{stop.company}</b><small>{stop.city}</small></div><div className="track-content"><span className="track-kicker">ROLE FOCUS</span><h3>{stop.summary}</h3><p>{stop.owned}</p>{stop.id === "amazon-platforms" && <a className="role-work-link" href="#/featured-work">Read the engineering case studies →</a>}{stop.id === "ssc-eze" && <a className="role-work-link" href="#/featured-work/legacy-modernization">Read the legacy modernization case study →</a>}</div></article>)}</div></section>;
+  return <section id="experience" className="section track-record"><Eyebrow>Roles & responsibilities</Eyebrow><div className="track-list">{experience.stops.map(stop => <article className="track-card" key={stop.id}><div className="track-meta"><Logo stop={stop} /><span className="track-dates">{stop.dates}</span><strong>{stop.title}</strong><b>{stop.company}</b><small>{stop.city}</small></div><div className="track-content"><span className="track-kicker">ROLE FOCUS</span><h3>{stop.summary}</h3><p>{stop.owned}</p>{stop.id === "amazon-platforms" && <a className="role-work-link" href="#work">Read the case studies →</a>}{stop.id === "ssc-eze" && <a className="role-work-link" href="#legacy-modernization">Read the modernization case study →</a>}</div></article>)}</div></section>;
 }
 
 function SystemsDomains() {
-  return <section id="principles" className="section principles"><Eyebrow>How I build</Eyebrow><h2>Principles, and the practice behind them.</h2><p className="section-sub">Each principle, the patterns I use to apply it, and the case study where it shows up.</p><div className="philosophy-list">{systemsDomains.map(domain => <article className="philosophy-row" key={domain.title}><h3>{domain.title}</h3><p>{domain.principle}</p><div><p className="philosophy-practice">{domain.practice}</p><p className="philosophy-evidence">{domain.evidence.map((link, i) => <span key={link.href + link.label}>{i > 0 && " · "}<a href={link.href}>{link.label} →</a></span>)}</p></div></article>)}</div></section>;
+  return <section id="how-i-build" className="section principles"><Eyebrow>How I build</Eyebrow><h2>Four rules, with the numbers behind them.</h2><div className="principle-tiles">{systemsDomains.map(domain => <article className="principle-tile" key={domain.title}><div className="tile-stat"><strong>{domain.stat.value}</strong><span>{domain.stat.label}</span></div><h3>{domain.title}</h3><p>{domain.principle}</p><p className="tile-evidence">{domain.evidence.map((link, i) => <span key={link.href + link.label}>{i > 0 && " · "}<a href={link.href}>{link.label} →</a></span>)}</p></article>)}</div></section>;
 }
 
 function FeaturedCaseStudies() {
-  return <section className="section featured-case-studies"><Eyebrow>{systemsWork.chapter}</Eyebrow><h2>{systemsWork.title}</h2><p className="section-sub">{systemsWork.sub}</p><div className="case-study-list">{systemsWork.cards.map((card, i) => <article className="case-study" id={card.id} key={card.id}><div className="case-study-index">0{i + 1}</div><div className="case-study-main"><p className="system-label">{card.label}</p><h3>{card.title}</h3>{card.context && <p className="case-study-context"><span className="case-label">TEAM CONTEXT</span>{card.context}</p>}<div className="case-study-columns"><div><span className="case-label">THE CONSTRAINT</span><p>{card.problem}</p></div><div className="case-study-hard-call"><span className="case-label">THE HARD CALL</span><p>{card.hardCall}</p></div><div><span className="case-label">MY CONTRIBUTION</span><p>{card.contribution}</p></div><div><span className="case-label">THE RESULT</span><p>{card.outcome}</p></div></div>{card.aside && <aside className="case-study-aside"><span className="case-label">{card.aside.label}</span><p>{card.aside.text}</p></aside>}{card.image && <figure className="case-study-figure"><img src={card.image.src} alt={card.image.alt} loading="lazy" /></figure>}<div className="case-tags">{card.pattern.split(" · ").map(tag => <span key={tag}>{tag}</span>)}</div>{card.related && <a className="role-work-link" href={card.related.url} target="_blank" rel="noreferrer">Read the write-up: {card.related.title} ↗</a>}</div></article>)}</div></section>;
+  return <section id="work" className="section featured-case-studies"><Eyebrow>{systemsWork.chapter}</Eyebrow><h2>{systemsWork.title}</h2><p className="section-sub">{systemsWork.sub}</p><div className="case-study-list">{systemsWork.cards.map((card, i) => <article className="case-study" id={card.id} key={card.id}><div className="case-study-index">0{i + 1}</div><div className="case-study-main"><p className="system-label">{card.label}</p><h3>{card.title}</h3>{card.context && <p className="case-study-context"><span className="case-label">TEAM CONTEXT</span>{card.context}</p>}<div className="case-study-columns"><div><span className="case-label">THE CONSTRAINT</span><p>{card.problem}</p></div><div className="case-study-hard-call"><span className="case-label">THE HARD CALL</span><p>{card.hardCall}</p></div><div><span className="case-label">MY CONTRIBUTION</span><p>{card.contribution}</p></div><div><span className="case-label">THE RESULT</span><p>{card.outcome}</p></div></div>{card.aside && <aside className="case-study-aside"><span className="case-label">{card.aside.label}</span><p>{card.aside.text}</p></aside>}{card.image && <figure className="case-study-figure"><img src={card.image.src} alt={card.image.alt} loading="lazy" /></figure>}<div className="case-tags">{card.pattern.split(" · ").map(tag => <span key={tag}>{tag}</span>)}</div>{card.related && <a className="role-work-link" href={card.related.url} target="_blank" rel="noreferrer">Read the write-up: {card.related.title} ↗</a>}</div></article>)}</div></section>;
 }
 
 function Leadership() {
@@ -123,10 +139,6 @@ function Leadership() {
 
 function Stack() {
   return <section className="section"><Eyebrow>Tools & languages</Eyebrow><h2>The implementation toolkit.</h2><div className="stack-list">{stack.map(row => <div className="stack-row" key={row.group}><strong>{row.group}</strong><span>{row.items}</span></div>)}</div></section>;
-}
-
-function PageIntro({ title, description }: { title: string; description: string }) {
-  return <header className="section page-intro"><h1>{title}</h1><p className="section-sub">{description}</p></header>;
 }
 
 function Story() {
@@ -139,7 +151,7 @@ function Story() {
   ];
   const routePoints = geoCities.map(city => city.coords);
   return (
-    <section id="story" className="section">
+    <section id="about" className="section">
       <Eyebrow>{story.chapter}</Eyebrow>
       <h2>{story.title}</h2>
       {story.paras.map((p, i) => <p key={i} className="prose">{p}</p>)}
@@ -187,7 +199,7 @@ function PostPage({ post }: { post: Post }) {
   useEffect(() => { window.scrollTo(0, 0); }, [post.slug]);
   return (
     <article className="section post-page">
-      <a href="#writing" onClick={() => (window.location.hash = "#writing")} className="back">← All writing</a>
+      <a href="#lab" className="back">← All writing</a>
       <h1 className="post-title">{post.title}</h1>
       {(post.body ?? []).map((p, i) => <p key={i} className="prose">{p}</p>)}
     </article>
@@ -196,7 +208,7 @@ function PostPage({ post }: { post: Post }) {
 
 function Building() {
   return (
-    <section id="building" className="section">
+    <section id="lab" className="section">
       <Eyebrow>{building.chapter}</Eyebrow>
       <h2>{building.title}</h2>
       <div className="grid grid-2">
@@ -217,14 +229,6 @@ function Building() {
     </section>
   );
 }
-
-function FeaturedWorkPage() {
-  return <main><PageIntro title="Featured engineering work." description="Fulfillment platforms at Amazon and financial software at SS&C Eze. My contribution, the operating constraints, and outcomes for each system." /><FeaturedCaseStudies /></main>;
-}
-function SystemsPage() { return <main><PageIntro title="Systems & architecture." description="How I structure workflows, make failure visible, and build for the next change." /><SystemsDomains /><Stack /></main>; }
-function ExperiencePage() { return <main><PageIntro title="Career & experience." description="From enterprise financial software to fulfillment platforms, followed by graduate study at UW Foster." /><ExperienceTrackRecord /><Leadership /></main>; }
-function ProjectsPage() { return <main><Building /><Writing /></main>; }
-function AboutPage() { return <main><Story /><OffClock /><Contact /></main>; }
 
 function Contact() {
   return (
@@ -264,32 +268,32 @@ function OffClock() {
 
 export default function App() {
   const slug = useRoute();
-  const page = usePage();
   const post = slug ? writing.posts.find(p => p.slug === slug && !p.external) : null;
   useEffect(() => {
-    // #/featured-work/<case-study-id> deep-links to one case study; everything else starts at the top.
-    const target = page === "featured-work" ? window.location.hash.split("/")[2] : undefined;
-    const el = target ? document.getElementById(target) : null;
-    if (el) el.scrollIntoView(); else window.scrollTo({ top: 0, behavior: "instant" });
-  }, [page, window.location.hash]);
+    // After the page renders, honour a deep link like #governance or #/writing/<slug>.
+    const id = window.location.hash.replace(/^#/, "");
+    const el = id && !id.startsWith("/") ? document.getElementById(id) : null;
+    if (el) { el.scrollIntoView(); window.addEventListener("load", () => el.scrollIntoView(), { once: true }); }
+  }, [post]);
+  if (post) return <><Nav /><PostPage post={post} /></>;
   return (
     <>
       <Nav />
-      {post ? (
-        <PostPage post={post} />
-      ) : page === "featured-work" ? <FeaturedWorkPage />
-      : page === "systems" ? <SystemsPage />
-      : page === "experience" ? <ExperiencePage />
-      : page === "projects" ? <ProjectsPage />
-      : page === "about" ? <AboutPage />
-      : (
-        <main>
-          <Hero />
-          <TechnicalProfile />
-          <Terminal />
-        </main>
-      )}
-      {!post && page === "home" && <Contact />}
+      <main>
+        <Hero />
+        <TechnicalProfile />
+        <FeaturedCaseStudies />
+        <SystemsDomains />
+        <Stack />
+        <ExperienceTrackRecord />
+        <Leadership />
+        <Building />
+        <Writing />
+        <Story />
+        <OffClock />
+        <Terminal />
+      </main>
+      <Contact />
     </>
   );
 }

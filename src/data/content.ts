@@ -8,7 +8,7 @@ export const identity = {
   name: "Akshaya Jonnalagadda",
   tagline: "I build systems that make complexity legible.",
   hook: "Backend engineer who builds the human side of automation: the reviews, approvals, and self-service paths that let teams move fast without breaking things.",
-  sub: "Engineer of seven years at Amazon and SS&C, now doing an MSIS at UW Foster. I learn how systems work: codebases, orgs, transit maps, and how to make them make sense for everyone else.",
+  sub: "Engineer of seven years at Amazon and SS&C, now doing a master's at UW Foster. I learn how systems work: codebases, orgs, transit maps, and how to make them make sense for everyone else.",
   linkedin: "https://www.linkedin.com/in/akshaya-jonnalagadda-00a30615a/",
   github: "https://github.com/Akshaya2612",
   welcome: "Welcome! Everything is figure-out-able.",
@@ -27,6 +27,7 @@ export type SystemsDomain = {
   summary: string;
   principle: string;
   practice: string;
+  stat: { value: string; label: string }; // the one number that proves the rule
   evidence: { label: string; href: string }[];
 };
 
@@ -34,38 +35,42 @@ export const systemsDomains: SystemsDomain[] = [
   {
     title: "Build once, reuse often",
     summary: "Turn repeated manual setup into a path the next team can run without me.",
-    principle: "Document the process once, replace manual configuration with code, and make the next run cheaper and safer than the first.",
+    principle: "Automate the repeat, keep the judgment. Pod assignment went from a hand-built code change to generated configuration, and the human approval stayed.",
     practice: "Self-service workflows, configuration as code, metadata-driven onboarding, reusable infrastructure.",
+    stat: { value: "7–8 h → min", label: "deploy and rollback time per service, and one engineer-year a year back" },
     evidence: [
-      { label: "Configuration as a platform", href: "#/featured-work/configuration-platform" },
-      { label: "Service onboarding", href: "#/featured-work/service-onboarding" },
+      { label: "Configuration as a platform", href: "#configuration-platform" },
+      { label: "Service onboarding", href: "#service-onboarding" },
     ],
   },
   {
     title: "Make failure visible",
     summary: "Put approvals in the path, and keep each review small enough that a person actually reads it.",
-    principle: "Systems fail. What matters is that they fail loudly enough to be diagnosed and fixed before the problem compounds.",
+    principle: "A review nobody reads is not a control. One review per pod, one site per line, auto-rejected after seven days of silence.",
     practice: "Event-driven state transitions, asynchronous approvals, retries, audit trails, role-scoped access.",
-    evidence: [{ label: "Governance built into the path", href: "#/featured-work/governance" }],
+    stat: { value: "7 days", label: "before an unanswered review rejects itself; every node address change across AFT and SCOT passes this gate" },
+    evidence: [{ label: "Governance built into the path", href: "#governance" }],
   },
   {
     title: "Design for safe change",
     summary: "Migrate live systems without asking the teams that depend on them to stop, or to notice.",
-    principle: "Backward compatibility, mirrored environments, and gradual migration paths turn architectural ambition into something teams can adopt.",
+    principle: "Migrate under the teams that depend on you without them noticing. Backward compatibility first, then cut over.",
     practice: "Backward-compatible interfaces, production-mirrored validation, zero-downtime migrations, CI/CD, test automation.",
+    stat: { value: "~70 services", label: "moved to OAuth with zero downtime, six months ahead of schedule; 29 adopted the routing framework" },
     evidence: [
-      { label: "Legacy broker modernization", href: "#/featured-work/legacy-modernization" },
-      { label: "Routing and OAuth migrations", href: "#/experience" },
+      { label: "Legacy broker modernization", href: "#legacy-modernization" },
+      { label: "Routing and OAuth migrations", href: "#experience" },
     ],
   },
   {
     title: "Make knowledge executable",
     summary: "Turn scattered documentation and live system data into tools people use mid-task.",
-    principle: "If the answer is trapped in a document or in one engineer's head, it is not yet a platform. Structure it, search it, and put it in the workflow.",
+    principle: "If the answer lives in a doc or one engineer's head, it is not a platform yet. Put it where the work happens.",
     practice: "Document parsing, structured metadata extraction, RAG, semantic search, operational assistants.",
+    stat: { value: "weeks → min", label: "to draft a service catalog entry; 10–13 searchable-question tickets per on-call rotation targeted" },
     evidence: [
-      { label: "Service onboarding", href: "#/featured-work/service-onboarding" },
-      { label: "Root-cause analysis", href: "#/featured-work/root-cause-analysis" },
+      { label: "Service onboarding", href: "#service-onboarding" },
+      { label: "Root-cause analysis", href: "#root-cause-analysis" },
     ],
   },
 ];
@@ -94,12 +99,12 @@ export const systemsWork = {
       id: "configuration-platform",
       title: "Configuration as a platform",
       label: "AMAZON / FULFILLMENT PLATFORM",
-      context: "The first of two maker-checker systems I owned. Every new fulfillment site had to be assigned to a serving partition, and that assignment lived in code.",
-      problem: "Assignments were hand-built code changes. Sites were allocated to the wrong partition or missed entirely, changes collided with in-flight deployments, and each change took 7–8 hours per service to propagate through the pipeline.",
-      hardCall: "Move the assignment out of code into a configuration store that deploys on its own, and keep human approval. With deploys this fast, the review is where a bad change gets stopped, so I made each review small: one per partition, and only when that partition changes.",
-      contribution: "Automated partition selection and configuration generation, and built the review loop around it. A conflict or a rejection regenerates the review from the latest configuration instead of patching a stale one. Only the owning team can approve, anyone can view, and an unanswered review rejects itself after seven days. I also built a diff view where each line is one site added to or removed from a partition.",
-      outcome: "Removed the manual work in site allocation, about one engineer-year every year. Deploys and rollbacks now take minutes instead of 7–8 hours per service. Reviewers caught bad allocations and stale changes before they deployed, which is what the review was there for.",
-      image: { src: "diagrams/review-loop.png", alt: "Review loop: a partition change generates a review; approval deploys in minutes; rejection, conflict, or seven days of silence regenerates it from the latest configuration." },
+      context: "The first of two maker-checker systems I owned, used by the Amazon Fulfillment Technologies (AFT) services that run pod-based load balancing. Every new fulfillment site had to be assigned to a serving pod, and that assignment lived in code.",
+      problem: "Assignments were hand-built code changes across 13 services. Sites were allocated to the wrong pod or missed entirely, changes collided with in-flight deployments, and each change took 7–8 hours per service to propagate through the pipeline.",
+      hardCall: "Move the assignment out of code into a configuration store that deploys on its own, and keep human approval. With deploys this fast, the review is where a bad change gets stopped, so I made each review small: one per pod, and only when that pod changes.",
+      contribution: "Automated pod selection and configuration generation for 13 services, and built the review loop around it. A conflict or a rejection regenerates the review from the latest configuration instead of patching a stale one. Only the owning team can approve, anyone can view, and an unanswered review rejects itself after seven days. I also built a diff view where each line is one site added to or removed from a pod.",
+      outcome: "In production, handling 10–20 site launches and reconfigurations a week. Removed the manual work in allocation, about one engineer-year every year; deploys and rollbacks take minutes instead of 7–8 hours per service. Reviewers caught bad allocations and stale changes before they deployed, which is what the review was there for.",
+      image: { src: "diagrams/review-loop.png", alt: "Review loop: a pod change generates a review; approval deploys in minutes; rejection, conflict, or seven days of silence regenerates it from the latest configuration." },
       pattern: "Configuration as data · maker-checker · reviewable diffs",
       related: { title: "Who is going to read this anyway?", url: "https://medium.com/@j.akshaya1997/who-is-going-to-read-this-anyway-5116ecd69c73" },
     },
@@ -107,11 +112,11 @@ export const systemsWork = {
       id: "governance",
       title: "Governance built into the path",
       label: "AMAZON / RELIABILITY / PLATFORM",
-      context: "The second maker-checker system: a self-service workflow engine for configuration changes that downstream systems depend on, such as site addresses.",
+      context: "The second maker-checker system: a self-service workflow engine for configuration changes that downstream systems depend on. It started with launches and reconfiguration for Amazon's Quick Commerce nodes and address changes for fulfillment centers.",
       problem: "When my team ran these workflows, the checks lived in emails and tickets, and we controlled what ran when. Making workflows self-service meant anyone could define one whose inputs would write straight into downstream systems.",
       hardCall: "Self-service without giving up control. I put two gates in the path: a new workflow is approved once before it can be published, and every run's inputs are approved before any data reaches a downstream system.",
       contribution: "With my team, built the engine: users define workflows by drag and drop, and each step is a downstream API call. I built the form layer that collects each step's inputs, and designed and built the approvals framework that routes new workflows and run inputs to my team and the other owners for sign-off.",
-      outcome: "Launched and in weekly production use for site launches and configuration updates. No value reaches a downstream system until the required owners sign off, and every decision is on record. Approvers caught wrong addresses before they propagated, and wrong steps in new workflows.",
+      outcome: "In weekly production use. Every address change for a first-, middle-, or last-mile node (fulfillment centers, sort centers, delivery stations) across AFT and Supply Chain Optimization Technologies (SCOT) now passes through this approvals system. No value reaches a downstream system until the required owners sign off, and every decision is on record. Approvers caught wrong addresses before they propagated, and wrong steps in new workflows.",
       aside: { label: "Under the hood: the form layer", text: "The form renders each step's inputs from the workflow definition itself, so a new workflow needs no new UI. Every downstream API wanted different input types, fields depended on each other (one answer changed the options for the next), and the validation rules lived in different systems. The form pulls those together, with value checks and auto-population, so malformed input never reaches a reviewer." },
       image: { src: "diagrams/two-gates.png", alt: "Two approval gates: once when a workflow is created, and on every run after the form validates the inputs." },
       pattern: "Self-service workflows · approval gates · dynamic forms · auditability",
@@ -171,9 +176,9 @@ export const story = {
     "I thought that instinct meant medicine. Then I watched enterprise dispatch software crash and saw field crews stall, unable to do their jobs. A system isn't just software. It is how people get their life's work done. So I skipped med school and started diagnosing systems instead.",
   ],
   approach: "That instinct shows up in my engineering: document what someone would otherwise have to rediscover, automate the repeatable parts, and make problems visible. At Amazon and SS&C, I worked on software that other people depended on to get their jobs done. Making it understandable and maintainable mattered as much as getting it to work.",
-  current: "After seven years in engineering at Amazon and SS&C, I'm pursuing an MSIS at UW Foster in Seattle. I'm building on that experience with a closer look at product decisions, data, and technology strategy: how to decide what is worth building, and how to make it useful to the people who rely on it.",
+  current: "After seven years in engineering at Amazon and SS&C, I'm pursuing a master's in Information Systems at UW Foster in Seattle. I'm building on that experience with a closer look at product decisions, data, and technology strategy: how to decide what is worth building, and how to make it useful to the people who rely on it.",
   photo: { alt: "Akshaya in front of the 'It's always Day 1' wall at an Amazon office.", caption: "Amazon, Hyderabad. Four years of Day 1." },
-  workLink: { label: "See how that translates into my work →", url: "#/featured-work" },
+  workLink: { label: "See how that translates into my work →", url: "#work" },
   cities: ["Andhra Pradesh", "Chennai", "Philadelphia", "Sunnyvale", "San Diego", "Chandigarh", "Chennai", "Hyderabad", "Seattle"],
 };
 
@@ -284,6 +289,8 @@ export type Experience = {
   owned: string;
   proof: string[];
   impact: string;
+  logo?: string;    // file under public/logos/
+  signals?: string[];
 };
 
 export const experience = {
@@ -293,8 +300,9 @@ export const experience = {
   stops: [
     {
       id: "uw-foster",
+      logo: "uw-foster.svg",
       company: "University of Washington · Foster",
-      title: "MSIS Student",
+      title: "Master's Student",
       dates: "2026 - Present",
       city: "Seattle",
       summary: "Adding product, data, and strategy coursework to seven years of engineering.",
@@ -304,6 +312,7 @@ export const experience = {
     },
     {
       id: "specialty-masters-committee",
+      logo: "uw-foster.svg",
       company: "UW Foster Specialty Masters Committee",
       title: "Head of Strategy",
       dates: "2026 - Present",
@@ -315,6 +324,7 @@ export const experience = {
     },
     {
       id: "amazon-platforms",
+      logo: "amazon.svg",
       company: "Amazon",
       title: "Software Development Engineer II",
       dates: "2024 - May 2026",
@@ -327,6 +337,7 @@ export const experience = {
     },
     {
       id: "amazon-delivery",
+      logo: "amazon.svg",
       company: "Amazon",
       title: "Software Development Engineer",
       dates: "2022 - 2024",
@@ -338,6 +349,7 @@ export const experience = {
     },
     {
       id: "ssc-eze",
+      logo: "ssc.svg",
       company: "SS&C / Eze Software",
       title: "Software Engineer · promoted in 2020",
       dates: "2019 - 2022",
@@ -349,6 +361,7 @@ export const experience = {
     },
     {
       id: "apple-internship",
+      logo: "apple.svg",
       company: "Apple",
       title: "Internship Trainee",
       dates: "2018 - 2019",
@@ -360,6 +373,7 @@ export const experience = {
     },
     {
       id: "ph-technologies",
+      logo: "ph-technologies.svg",
       company: "PH Technologies",
       title: "Data Science Intern",
       dates: "2018",
