@@ -66,7 +66,7 @@ function Hero() {
         <p className="welcome">{identity.welcome}</p>
         <h1>{identity.tagline}</h1>
         <p className="hook">{identity.hook}</p>
-        <p className="hero-sub">{identity.sub}</p>
+        <p className="hero-sub hero-sub-short">{identity.sub}</p>
         <p className="hero-name">{identity.name}</p>
         <div className="hero-links"><a href="#work">See the work →</a><a href="#how-i-build">How I build →</a></div>
       </div>

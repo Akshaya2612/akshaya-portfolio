@@ -227,7 +227,7 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-
 .case-study-main { min-width: 0; }
 .case-study h3 { font-size: clamp(1.35rem, 3vw, 2rem); margin-bottom: .8rem; }
 .case-study-summary { color: var(--ink); font-size: 1rem; max-width: 46rem; margin: 0 0 1.5rem; }
-.case-study-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; border-top: 1px solid var(--line); padding-top: 1rem; }
+.case-study-columns { display: grid; grid-template-columns: 1fr; gap: 1.4rem; border-top: 1px solid var(--line); padding-top: 1.2rem; max-width: 46rem; }
 .case-study-columns p { color: var(--muted); font-size: .85rem; line-height: 1.55; margin: .45rem 0 0; }
 .case-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 1.2rem; }
 .case-tags span { border: 1px solid var(--line); color: var(--accent); padding: .2rem .5rem; font-size: .63rem; }
@@ -471,3 +471,6 @@ section[id], footer[id], header[id] { scroll-margin-top: 4.5rem; }
 .principle-tile p { margin: 0; color: var(--muted); font-size: .86rem; line-height: 1.5; }
 .principle-tile .tile-evidence { margin-top: .7rem; font-size: .8rem; }
 @media (max-width: 680px) { .principle-tiles { grid-template-columns: 1fr; } }
+
+.hero-sub-short { font-size: .95rem; color: var(--muted); }
+.case-study-columns p { max-width: 44rem; }

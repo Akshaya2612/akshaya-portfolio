@@ -7,8 +7,8 @@
 export const identity = {
   name: "Akshaya Jonnalagadda",
   tagline: "I build systems that make complexity legible.",
-  hook: "I ask two questions of every system: where is a person doing by hand what a machine should, and where is a machine deciding something only a person should. Seven years at Amazon and SS&C, most of them answering those two questions for the software behind fulfillment-site launches.",
-  sub: "Now doing a master's at UW Foster. I learn how systems work, whether that is a codebase, an org, or a transit map, and then make them make sense for everyone else. A manager once wrote that I keep asking how manual effort can be eliminated and how systems can be made more intuitive for the people using them. That is the fairest one-line description of me I have.",
+  hook: "I ask two questions of every system: where is a person doing by hand what a machine should, and where is a machine deciding something only a person should.",
+  sub: "Seven years at Amazon and SS&C. Now a master's at UW Foster.",
   linkedin: "https://www.linkedin.com/in/akshaya-jonnalagadda-00a30615a/",
   github: "https://github.com/Akshaya2612",
   welcome: "Welcome! Everything is figure-out-able.",
@@ -34,10 +34,10 @@ export type SystemsDomain = {
 export const systemsDomains: SystemsDomain[] = [
   {
     title: "Build once, reuse often",
-    summary: "Pod assignment for 13 fulfillment services was a hand-built code change per site. I turned it into generated configuration: 10–20 site launches a week with no manual step, one engineer-year a year back.",
-    principle: "Automate the repeat, keep the judgment. When I automated pod assignment I kept the approval step on purpose, and reviewers have caught the algorithm being wrong since.",
+    summary: "Every new fulfillment site needed a hand-written code change in 13 services. I turned it into generated configuration: 10–20 site launches a week with no manual step, one engineer-year a year back.",
+    principle: "Automate the repeat, keep the judgment. When I automated site setup I kept the approval step on purpose, and reviewers have caught the algorithm being wrong since.",
     practice: "Self-service workflows, configuration as code, metadata-driven onboarding, reusable infrastructure.",
-    stat: { value: "7–8 h → min", label: "deploy and rollback time per service, and one engineer-year a year back" },
+    stat: { value: "7–8 h → min", label: "to roll out a site configuration change per service, and one engineer-year a year back" },
     evidence: [
       { label: "Configuration as a platform", href: "#configuration-platform" },
       { label: "Service registry", href: "#service-onboarding" },
@@ -46,17 +46,17 @@ export const systemsDomains: SystemsDomain[] = [
   {
     title: "Make failure visible",
     summary: "A self-service workflow was once set up like the wrong type and failed in production, because nothing required a human look. I built the approval gate that every node address change across AFT and SCOT now passes through.",
-    principle: "Approved is not applied, and silence is not a yes. One review per pod, one site per line, auto-rejected after seven days. A review nobody reads is not a control.",
+    principle: "Approved is not applied, and silence is not a yes. Small reviews, one site per line, auto-rejected after seven days. A review nobody reads is not a control.",
     practice: "Event-driven state transitions, asynchronous approvals, retries, audit trails, role-scoped access.",
-    stat: { value: "7 days", label: "before an unanswered review rejects itself; every node address change across AFT and SCOT passes this gate" },
+    stat: { value: "7 days", label: "before an unanswered review rejects itself; every site address change across Amazon's fulfillment and supply-chain tech orgs passes this gate" },
     evidence: [{ label: "Governance built into the path", href: "#governance" }],
   },
   {
-    title: "Design for safe change",
-    summary: "Four core and ~70 downstream services moved to OAuth with zero downtime, six months early. The first cross-region migration I led became the team's written blueprint for the rest.",
-    principle: "Demo in beta before you roll out. I learned this in a retro: our customers' feedback was arriving after production deployment, which is a bug in the process, not in the customer.",
+    title: "Disagree early, commit fully",
+    summary: "Moved ~70 services to a new authentication system with zero downtime, six months early. The first cross-region migration I led became the team's written blueprint for the rest.",
+    principle: "I say the uncomfortable thing in the design review, not in the retro. I have pushed back on sprint priorities to get a deprecation done before it hurt us, and once the call is made I carry it.",
     practice: "Backward-compatible interfaces, production-mirrored validation, zero-downtime migrations, CI/CD, test automation.",
-    stat: { value: "~70 services", label: "moved to OAuth with zero downtime, six months ahead of schedule; 29 adopted the routing framework" },
+    stat: { value: "6 months early", label: "zero-downtime authentication migration across ~70 services, after pushing to prioritize it; 29 services adopted the routing framework" },
     evidence: [
       { label: "Legacy broker modernization", href: "#legacy-modernization" },
       { label: "Routing and OAuth migrations", href: "#experience" },
