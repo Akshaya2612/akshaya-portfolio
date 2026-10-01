@@ -452,3 +452,8 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-
 .story-photo img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border: 1px solid var(--line); border-radius: 8px; }
 .story-photo figcaption { margin-top: .5rem; color: var(--muted); font-family: "JetBrains Mono", monospace; font-size: .66rem; letter-spacing: .05em; }
 @media (max-width: 680px) { .story-split { grid-template-columns: 1fr; } .story-photo { max-width: 16rem; } }
+
+/* home: portrait */
+.hero-with-portrait { display: grid; grid-template-columns: minmax(0, 1fr) 14rem; gap: 3rem; align-items: start; }
+.hero-portrait { display: block; width: 14rem; height: 14rem; border-radius: 50%; object-fit: cover; border: 1px solid var(--line); box-shadow: 0 0 0 6px var(--panel); justify-self: end; margin-top: 2.5rem; }
+@media (max-width: 760px) { .hero-with-portrait { grid-template-columns: 1fr; gap: 1.5rem; } .hero-portrait { width: 8rem; height: 8rem; justify-self: start; margin-top: 0; order: -1; } }

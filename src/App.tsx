@@ -7,6 +7,7 @@ import boardGameImage from "./images/board_game.jpg";
 import readingImage from "./images/reading.jpg";
 import travellingImage from "./images/travelling.jpg";
 import amazonPhoto from "./images/amazon.jpg";
+import portrait from "./images/portrait.jpg";
 import {
   identity, story, writing, building, contact, offClock, technicalProfile,
   experience, systemsWork, systemsDomains, leadership, stack, Post,
@@ -51,13 +52,16 @@ function Nav() {
 
 function Hero() {
   return (
-    <header className="hero" id="top">
-      <p className="welcome">{identity.welcome}</p>
-      <h1>{identity.tagline}</h1>
-      <p className="hook">{identity.hook}</p>
-      <p className="hero-sub">{identity.sub}</p>
-      <p className="hero-name">{identity.name}</p>
-      <div className="hero-links"><a href="#/featured-work">Explore my work →</a><a href="#/systems">Architecture & skills →</a></div>
+    <header className="hero hero-with-portrait" id="top">
+      <div className="hero-copy">
+        <p className="welcome">{identity.welcome}</p>
+        <h1>{identity.tagline}</h1>
+        <p className="hook">{identity.hook}</p>
+        <p className="hero-sub">{identity.sub}</p>
+        <p className="hero-name">{identity.name}</p>
+        <div className="hero-links"><a href="#/featured-work">Explore my work →</a><a href="#/systems">Architecture & skills →</a></div>
+      </div>
+      <img className="hero-portrait" src={portrait} alt={identity.name} width="640" height="640" />
     </header>
   );
 }
