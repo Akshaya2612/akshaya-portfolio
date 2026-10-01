@@ -8,7 +8,7 @@ import readingImage from "./images/reading.jpg";
 import travellingImage from "./images/travelling.jpg";
 import {
   identity, story, writing, building, contact, offClock, technicalProfile,
-  experience, systemsWork, engineeringPrinciples, leadership, stack, skillMatrix, Post,
+  experience, systemsWork, systemsDomains, leadership, stack, Post,
 } from "./data/content";
 
 // ================= tiny hash router for posts =================
@@ -89,63 +89,27 @@ function Terminal() {
   </section>;
 }
 
-function SkillMatrix() {
-  return <section className="section skill-matrix"><div className="domain-heading"><span>02 // CAPABILITY DOMAIN</span><b>::</b><span>DECOUPLED SYSTEMS ARCHITECTURE</span></div><h2>Architectural &amp; Core Skill Matrix</h2><p className="section-sub">The design patterns, infrastructure, and judgment I bring to systems that have to keep moving when the environment is imperfect.</p><div className="skill-matrix-grid">{skillMatrix.map((skill, i) => <article className="skill-matrix-card" key={skill.domain}><span className="matrix-index">0{i + 1}</span><h3>{skill.domain}</h3><p>{skill.focus}</p></article>)}</div></section>;
-}
-
-function ApprovalBlueprint() {
-  return (
-    <figure className="approval-blueprint" aria-labelledby="approval-blueprint-title">
-      <figcaption>
-        <span className="case-label">SIMPLIFIED ARCHITECTURE / LOGICAL WORKFLOW</span>
-        <h4 id="approval-blueprint-title">A decision gates the configuration change.</h4>
-        <p>A request can wait for a human decision. Approval and rejection produce different events and outcomes.</p>
-      </figcaption>
-      <ol className="approval-stages" aria-label="Before a decision">
-        <li><span>01 / REQUEST</span><strong>Submit change</strong><p>A configuration update enters the workflow.</p></li>
-        <li><span>02 / NOTIFICATION</span><strong>Ask for approval</strong><p>Notify the reviewer that a decision is needed.</p></li>
-        <li className="approval-wait"><span>03 / WAITING</span><strong>Await decision</strong><p>The request remains pending until approved or rejected.</p></li>
-      </ol>
-      <div className="approval-branches" aria-label="Decision outcomes">
-        <section className="approval-branch">
-          <span className="branch-label">APPROVED</span>
-          <ol><li><strong>Approval event</strong><p>Communicate the accepted decision.</p></li><li><strong>Apply configuration</strong><p>Update configuration and workflow status.</p></li></ol>
-        </section>
-        <section className="approval-branch approval-rejected">
-          <span className="branch-label">REJECTED</span>
-          <ol><li><strong>Rejection event</strong><p>Communicate the declined decision.</p></li><li><strong>Record rejection</strong><p>Update status without applying the requested change.</p></li></ol>
-        </section>
-      </div>
-      <aside className="approval-principle">
-        <span className="case-label">DESIGN PRIORITY / VISIBLE FAILURE</span>
-        <p>Approval is not the same as successful application. If a configuration update fails, operators need to see where it stopped before deciding how to recover.</p>
-      </aside>
-      <p className="blueprint-scope">This diagram shows the workflow at a conceptual level. Storage, retry policies, and duplicate-event handling are not specified here.</p>
-    </figure>
-  );
-}
-
 function TechnicalProfile() {
   return (
     <section id="signal" className="section technical-profile">
       <Eyebrow>{technicalProfile.chapter}</Eyebrow>
       <h2>{technicalProfile.title}</h2>
       <p className="section-sub">{technicalProfile.sub}</p>
-      <div className="capability-grid">{technicalProfile.capabilities.map(capability => <article className="capability" key={capability.title}><span className="capability-marker">+</span><h3>{capability.title}</h3><p>{capability.text}</p></article>)}</div>
+      <div className="capability-grid">{systemsDomains.map(domain => <article className="capability" key={domain.title}><span className="capability-marker">+</span><h3>{domain.title}</h3><p>{domain.summary}</p></article>)}</div>
     </section>
   );
 }
 
 function ExperienceTrackRecord() {
-  return <section className="section track-record"><Eyebrow>Roles & responsibilities</Eyebrow><div className="track-list">{experience.stops.map(stop => <article className="track-card" key={stop.id}><div className="track-meta"><span className="track-dates">{stop.dates}</span><strong>{stop.title}</strong><b>{stop.company}</b><small>{stop.city}</small></div><div className="track-content"><span className="track-kicker">ROLE FOCUS</span><h3>{stop.summary}</h3><p>{stop.owned}</p>{stop.id === "amazon-platforms" && <a className="role-work-link" href="#/featured-work">Read the engineering case studies →</a>}{stop.id === "ssc-eze" && <a className="role-work-link" href="#/featured-work">Read the legacy modernization case study →</a>}</div></article>)}</div></section>;
+  return <section className="section track-record"><Eyebrow>Roles & responsibilities</Eyebrow><div className="track-list">{experience.stops.map(stop => <article className="track-card" key={stop.id}><div className="track-meta"><span className="track-dates">{stop.dates}</span><strong>{stop.title}</strong><b>{stop.company}</b><small>{stop.city}</small></div><div className="track-content"><span className="track-kicker">ROLE FOCUS</span><h3>{stop.summary}</h3><p>{stop.owned}</p>{stop.id === "amazon-platforms" && <a className="role-work-link" href="#/featured-work">Read the engineering case studies →</a>}{stop.id === "ssc-eze" && <a className="role-work-link" href="#/featured-work/legacy-modernization">Read the legacy modernization case study →</a>}</div></article>)}</div></section>;
 }
 
-function Principles() {
-  return <section id="principles" className="section principles"><Eyebrow>How I think</Eyebrow><h2>Philosophies for production systems.</h2><p className="section-sub">The principles behind the architecture: concise enough to remember, specific enough to change how I build.</p><div className="philosophy-list">{engineeringPrinciples.map((principle, i) => <article className="philosophy-row" key={principle.title}><span className="philosophy-number">[PHILOSOPHY_0{i + 1}]</span><h3>{principle.title}</h3><p>{principle.text}</p></article>)}</div></section>;
+function SystemsDomains() {
+  return <section id="principles" className="section principles"><Eyebrow>How I build</Eyebrow><h2>Principles, and the practice behind them.</h2><p className="section-sub">Each principle, the patterns I use to apply it, and the case study where it shows up.</p><div className="philosophy-list">{systemsDomains.map(domain => <article className="philosophy-row" key={domain.title}><h3>{domain.title}</h3><p>{domain.principle}</p><div><p className="philosophy-practice">{domain.practice}</p><p className="philosophy-evidence">{domain.evidence.map((link, i) => <span key={link.href + link.label}>{i > 0 && " · "}<a href={link.href}>{link.label} →</a></span>)}</p></div></article>)}</div></section>;
 }
 
 function FeaturedCaseStudies() {
-  return <section className="section featured-case-studies"><div className="feature-heading"><div><Eyebrow>[02] // FLAGSHIP_CASE_STUDIES</Eyebrow><h2>Architectural blueprints.</h2></div><span className="feature-index">CASE STUDIES // {String(systemsWork.cards.length).padStart(2, "0")}</span></div><p className="section-sub">The systems I want a hiring team to understand first: the operating problem, the design move, and the evidence of what changed.</p><div className="case-study-list">{systemsWork.cards.map((card, i) => <article className="case-study" id={"blueprint" in card ? "governance-case-study" : card.label.startsWith("SS&C") ? "legacy-modernization" : undefined} key={card.title}><div className="case-study-index">0{i + 1}</div><div className="case-study-main"><p className="system-label">{card.label}</p><h3>{card.title}</h3>{"context" in card && <p className="case-study-context"><span className="case-label">TEAM CONTEXT</span>{card.context}</p>}<span className="case-label">MY CONTRIBUTION</span><p className="case-study-summary">{card.contribution}</p><div className="case-study-columns"><div><span className="case-label">THE CONSTRAINT</span><p>{card.problem}</p></div><div><span className="case-label">THE RESULT</span><p>{card.outcome}</p></div></div>{"blueprint" in card && card.blueprint === "approval-workflow" && <ApprovalBlueprint />}<div className="case-tags">{card.pattern.split(" · ").map(tag => <span key={tag}>{tag}</span>)}</div></div></article>)}</div></section>;
+  return <section className="section featured-case-studies"><Eyebrow>{systemsWork.chapter}</Eyebrow><h2>{systemsWork.title}</h2><p className="section-sub">{systemsWork.sub}</p><div className="case-study-list">{systemsWork.cards.map((card, i) => <article className="case-study" id={card.id} key={card.id}><div className="case-study-index">0{i + 1}</div><div className="case-study-main"><p className="system-label">{card.label}</p><h3>{card.title}</h3>{card.context && <p className="case-study-context"><span className="case-label">TEAM CONTEXT</span>{card.context}</p>}<div className="case-study-columns"><div><span className="case-label">THE CONSTRAINT</span><p>{card.problem}</p></div><div className="case-study-hard-call"><span className="case-label">THE HARD CALL</span><p>{card.hardCall}</p></div><div><span className="case-label">MY CONTRIBUTION</span><p>{card.contribution}</p></div><div><span className="case-label">THE RESULT</span><p>{card.outcome}</p></div></div>{card.aside && <aside className="case-study-aside"><span className="case-label">{card.aside.label}</span><p>{card.aside.text}</p></aside>}{card.image && <figure className="case-study-figure"><img src={card.image.src} alt={card.image.alt} loading="lazy" /></figure>}<div className="case-tags">{card.pattern.split(" · ").map(tag => <span key={tag}>{tag}</span>)}</div>{card.related && <a className="role-work-link" href={card.related.url} target="_blank" rel="noreferrer">Read the write-up: {card.related.title} ↗</a>}</div></article>)}</div></section>;
 }
 
 function Leadership() {
@@ -244,8 +208,10 @@ function Building() {
   );
 }
 
-function FeaturedWorkPage() { return <main><PageIntro title="Featured engineering work." description="Fulfillment platforms at Amazon and financial software at SS&C Eze. My contribution, the operating constraints, and outcomes for each system." /><FeaturedCaseStudies /></main>; }
-function SystemsPage() { return <main><PageIntro title="Systems & architecture." description="How I structure workflows, make failure visible, and build for the next change." /><SkillMatrix /><Principles /><Stack /></main>; }
+function FeaturedWorkPage() {
+  return <main><PageIntro title="Featured engineering work." description="Fulfillment platforms at Amazon and financial software at SS&C Eze. My contribution, the operating constraints, and outcomes for each system." /><FeaturedCaseStudies /></main>;
+}
+function SystemsPage() { return <main><PageIntro title="Systems & architecture." description="How I structure workflows, make failure visible, and build for the next change." /><SystemsDomains /><Stack /></main>; }
 function ExperiencePage() { return <main><PageIntro title="Career & experience." description="From enterprise financial software to fulfillment platforms, followed by graduate study at UW Foster." /><ExperienceTrackRecord /><Leadership /></main>; }
 function ProjectsPage() { return <main><Building /><Writing /></main>; }
 function AboutPage() { return <main><Story /><OffClock /><Contact /></main>; }
@@ -290,7 +256,12 @@ export default function App() {
   const slug = useRoute();
   const page = usePage();
   const post = slug ? writing.posts.find(p => p.slug === slug && !p.external) : null;
-  useEffect(() => { window.scrollTo({ top: 0, behavior: "instant" }); }, [page]);
+  useEffect(() => {
+    // #/featured-work/<case-study-id> deep-links to one case study; everything else starts at the top.
+    const target = page === "featured-work" ? window.location.hash.split("/")[2] : undefined;
+    const el = target ? document.getElementById(target) : null;
+    if (el) el.scrollIntoView(); else window.scrollTo({ top: 0, behavior: "instant" });
+  }, [page, window.location.hash]);
   return (
     <>
       <Nav />

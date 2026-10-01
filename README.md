@@ -10,10 +10,6 @@ Everything lives in `src/data/content.ts`: copy, posts, projects.
   Posts with `external` set (e.g. Medium) link out instead.
 - **Add a project:** append to `building.cards`: real link or don't list it.
 
-TODOs before going live (search "TODO" in content.ts):
-- GitHub username/repo links
-- Medium write-up URL for the transformers project
-
 ## Run locally
 ```
 npm install
