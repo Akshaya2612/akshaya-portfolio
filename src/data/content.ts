@@ -172,6 +172,7 @@ export const story = {
   ],
   approach: "That instinct shows up in my engineering: document what someone would otherwise have to rediscover, automate the repeatable parts, and make problems visible. At Amazon and SS&C, I worked on software that other people depended on to get their jobs done. Making it understandable and maintainable mattered as much as getting it to work.",
   current: "After seven years in engineering at Amazon and SS&C, I'm pursuing an MSIS at UW Foster in Seattle. I'm building on that experience with a closer look at product decisions, data, and technology strategy: how to decide what is worth building, and how to make it useful to the people who rely on it.",
+  photo: { alt: "Akshaya in front of the 'It's always Day 1' wall at an Amazon office.", caption: "Amazon, Hyderabad. Four years of Day 1." },
   workLink: { label: "See how that translates into my work →", url: "#/featured-work" },
   cities: ["Andhra Pradesh", "Chennai", "Philadelphia", "Sunnyvale", "San Diego", "Chandigarh", "Chennai", "Hyderabad", "Seattle"],
 };

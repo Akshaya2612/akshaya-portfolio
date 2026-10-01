@@ -6,6 +6,7 @@ import booksImage from "./images/books.jpg";
 import boardGameImage from "./images/board_game.jpg";
 import readingImage from "./images/reading.jpg";
 import travellingImage from "./images/travelling.jpg";
+import amazonPhoto from "./images/amazon.jpg";
 import {
   identity, story, writing, building, contact, offClock, technicalProfile,
   experience, systemsWork, systemsDomains, leadership, stack, Post,
@@ -145,8 +146,13 @@ function Story() {
           {geoCities.map((city, i) => <CircleMarker key={`${city.name}-${i}`} center={city.coords} radius={3.5} pathOptions={{ color: "#2f9e7d", weight: 1.5, fillColor: "#2f9e7d", fillOpacity: 1 }} />)}
         </MapContainer>
       </div>
-      <p className="prose">{story.approach}</p>
-      <p className="prose">{story.current}</p>
+      <div className="story-split">
+        <div>
+          <p className="prose">{story.approach}</p>
+          <p className="prose">{story.current}</p>
+        </div>
+        <figure className="story-photo"><img src={amazonPhoto} alt={story.photo.alt} loading="lazy" /><figcaption>{story.photo.caption}</figcaption></figure>
+      </div>
       <a className="role-work-link" href={story.workLink.url}>{story.workLink.label}</a>
     </section>
   );

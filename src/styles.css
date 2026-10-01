@@ -444,3 +444,11 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-
 .case-study-aside p { margin: 0; color: var(--muted); font-size: .85rem; line-height: 1.55; }
 .case-study-figure { margin: 1.5rem 0 0; }
 .case-study-figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; }
+
+/* about: story + photo */
+.story-split { display: grid; grid-template-columns: minmax(0, 1fr) 16rem; gap: 2rem; align-items: start; margin-top: 1.5rem; }
+.story-split .prose { max-width: none; }
+.story-photo { margin: 0; }
+.story-photo img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border: 1px solid var(--line); border-radius: 8px; }
+.story-photo figcaption { margin-top: .5rem; color: var(--muted); font-family: "JetBrains Mono", monospace; font-size: .66rem; letter-spacing: .05em; }
+@media (max-width: 680px) { .story-split { grid-template-columns: 1fr; } .story-photo { max-width: 16rem; } }
