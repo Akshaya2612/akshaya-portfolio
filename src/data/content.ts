@@ -34,10 +34,10 @@ export type SystemsDomain = {
 export const systemsDomains: SystemsDomain[] = [
   {
     title: "Build once, reuse often",
-    summary: "Every new fulfillment site needed a hand-written code change in 13 services. I turned it into generated configuration: 10–20 site launches a week with no manual step, one engineer-year a year back.",
-    principle: "Automate the repeat, keep the judgment. When I automated site setup I kept the approval step on purpose, and reviewers have caught the algorithm being wrong since.",
+    summary: "Every new fulfillment site needed a hand-written config change, a code review, and a pipeline deploy in 13 services. I turned that into generated configuration: site setup from six weeks to two, one engineer-year a year back.",
+    principle: "Automate the repeat, keep the judgment. When I automated site setup I kept the approval step on purpose, and reviewers have caught wrong assignments since.",
     practice: "Self-service workflows, configuration as code, metadata-driven onboarding, reusable infrastructure.",
-    stat: { value: "7–8 h → min", label: "to roll out a site configuration change per service, and one engineer-year a year back" },
+    stat: { value: "6 wk → 2 wk", label: "to set up a fulfillment center, with deploys down from 7–8 hours per service to minutes" },
     evidence: [
       { label: "Configuration as a platform", href: "#configuration-platform" },
       { label: "Service registry", href: "#service-onboarding" },
@@ -53,10 +53,10 @@ export const systemsDomains: SystemsDomain[] = [
   },
   {
     title: "Disagree early, commit fully",
-    summary: "Moved ~70 services to a new authentication system with zero downtime, six months early. The first cross-region migration I led became the team's written blueprint for the rest.",
+    summary: "Moved ~70 services to a new authentication system with zero downtime, ahead of the rest of the org. The first cross-region migration I led became the team's written blueprint for the rest.",
     principle: "I say the uncomfortable thing in the design review, not in the retro. I have pushed back on sprint priorities to get a deprecation done before it hurt us, and once the call is made I carry it.",
     practice: "Backward-compatible interfaces, production-mirrored validation, zero-downtime migrations, CI/CD, test automation.",
-    stat: { value: "6 months early", label: "zero-downtime authentication migration across ~70 services, after pushing to prioritize it; 29 services adopted the routing framework" },
+    stat: { value: "Zero downtime", label: "authentication migration across ~70 services, finished ahead of the rest of the org after I pushed to prioritize it" },
     evidence: [
       { label: "Legacy broker modernization", href: "#legacy-modernization" },
       { label: "Routing and OAuth migrations", href: "#experience" },
@@ -99,11 +99,11 @@ export const systemsWork = {
       id: "configuration-platform",
       title: "Configuration as a platform",
       label: "AMAZON / FULFILLMENT PLATFORM",
-      context: "Part of a program to cut fulfillment-center setup from 6 weeks to 3 by removing manual configuration across 51 Amazon Fulfillment Technologies (AFT) services. I owned the 13 that use pod-based load balancing: every new site had to be assigned to a serving pod, and that assignment lived in code.",
-      problem: "Assignments were hand-built code changes across 13 services. Sites were allocated to the wrong pod or missed entirely, changes collided with in-flight deployments, and each change took 7–8 hours per service to propagate through the pipeline.",
+      context: "Part of a program to take the manual configuration out of fulfillment-center launches across 51 Amazon Fulfillment Technologies (AFT) services. I owned the 13 that use pod-based load balancing.",
+      problem: "The system already knew which pod a new site belonged to. Getting it there was manual: a hand-written config change, a code review, a change-management approval, and a pipeline deploy, for each of 13 services. Sites were missed or put in the wrong pod, changes collided with in-flight deployments, and each deploy took 7–8 hours per service.",
       hardCall: "Move the assignment out of code into a configuration store that deploys on its own, and keep human approval. With deploys this fast, the review is where a bad change gets stopped, so I made each review small: one per pod, and only when that pod changes.",
-      contribution: "Automated pod selection and configuration generation for 13 services, and built the review loop around it. A conflict or a rejection regenerates the review from the latest configuration instead of patching a stale one. Only the owning team can approve, anyone can view, and an unanswered review rejects itself after seven days. I also built a diff view where each line is one site added to or removed from a pod.",
-      outcome: "In production, handling 10–20 site launches and reconfigurations a week, and extended to site deprecation with minimal change. Eliminated 13 manual change requests per launch cycle, 3–4 cycles a year: about one engineer-year every year. Deploys and rollbacks take minutes instead of 7–8 hours per service. Reviewers caught bad allocations and stale changes before they deployed, which is what the review was there for.",
+      contribution: "Automated configuration generation and deployment for 13 services, so a launch no longer needed a code review, a change-management approval, or a pipeline run per service, and built the review loop around it. A conflict or a rejection regenerates the review from the latest configuration instead of patching a stale one. Only the owning team can approve, anyone can view, and an unanswered review rejects itself after seven days. I also built a diff view where each line is one site added to or removed from a pod.",
+      outcome: "Fulfillment-center setup went from about six weeks to about two. In production, handling 10–20 site launches and reconfigurations a week, and extended to site deprecation with minimal change. Eliminated 13 manual change requests per launch cycle, 3–4 cycles a year: about one engineer-year every year. Deploys and rollbacks take minutes instead of 7–8 hours per service. Reviewers caught bad allocations and stale changes before they deployed, which is what the review was there for.",
       image: { src: "diagrams/review-loop.png", alt: "Review loop: a pod change generates a review; approval deploys in minutes; rejection, conflict, or seven days of silence regenerates it from the latest configuration." },
       pattern: "Configuration as data · maker-checker · reviewable diffs",
       related: { title: "Who is going to read this anyway?", url: "https://medium.com/@j.akshaya1997/who-is-going-to-read-this-anyway-5116ecd69c73" },
@@ -346,7 +346,7 @@ export const experience = {
       summary: "Making automation safe to hand to other people: approvals, audit trails, and reviews designed to be read.",
       owned: "Event-driven approvals, auditability, authentication migration, staging strategy, and continuous delivery.",
       proof: ["Two maker-checker systems: pod assignment as generated configuration for 13 services, and an approvals framework that cut workflow creation from 8 weeks to 1", "Led 10 engineers to full continuous deployment: integration test coverage 5% → 95%, release waits 2 weeks → under a day", "Opened last-mile site launches in the EU and Japan by rebuilding cross-region connectivity: 31 EU sites live, 30% space savings, 15% throughput gain, 4 hours a week back per manager"],
-      impact: "Stood up production-equivalent test environments for last-mile services: 10 test sites in 2024, targeting the 46% of bad deployments that had been causing incidents. Zero-downtime OAuth migration across 4 core and ~70 downstream services, six months early.",
+      impact: "Stood up production-equivalent test environments for last-mile services: 10 test sites in 2024, targeting the 46% of bad deployments that had been causing incidents. Zero-downtime OAuth migration across 4 core and ~70 downstream services, ahead of the rest of the org.",
     },
     {
       id: "ssc-eze",
