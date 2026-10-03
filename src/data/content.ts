@@ -40,7 +40,7 @@ export const systemsDomains: SystemsDomain[] = [
     stat: { value: "6 wk → 2 wk", label: "to set up a fulfillment center, with deploys down from 7–8 hours per service to minutes" },
     evidence: [
       { label: "Configuration as a platform", href: "#configuration-platform" },
-      { label: "Service registry", href: "#service-onboarding" },
+      { label: "Code-to-config migration", href: "#code-to-config-migration" },
     ],
   },
   {
@@ -58,7 +58,6 @@ export const systemsDomains: SystemsDomain[] = [
     practice: "Backward-compatible interfaces, production-mirrored validation, zero-downtime migrations, CI/CD, test automation.",
     stat: { value: "Zero downtime", label: "authentication migration across ~70 services, finished ahead of the rest of the org after I pushed to prioritize it" },
     evidence: [
-      { label: "Legacy broker modernization", href: "#legacy-modernization" },
       { label: "Routing and OAuth migrations", href: "#experience" },
     ],
   },
@@ -69,8 +68,7 @@ export const systemsDomains: SystemsDomain[] = [
     practice: "Document parsing, structured metadata extraction, RAG, semantic search, operational assistants.",
     stat: { value: "3–4 h → 3–4 min", label: "per registry change, developer time to self-service, across 800+ services" },
     evidence: [
-      { label: "Service registry", href: "#service-onboarding" },
-      { label: "Root-cause analysis", href: "#root-cause-analysis" },
+      { label: "Code-to-config migration", href: "#code-to-config-migration" },
     ],
   },
 ];
@@ -94,7 +92,7 @@ export type CaseStudy = {
 export const systemsWork = {
   chapter: "Selected Systems",
   title: "Selected engineering systems",
-  sub: "The systems I want a hiring team to understand first: the constraint, the call I had to make, what I built, and what changed.",
+  sub: "Three pieces of work in full: the constraint, the call I had to make, what I built, and what changed. Then the rest, in a line each.",
   cards: [
     {
       id: "configuration-platform",
@@ -126,40 +124,6 @@ export const systemsWork = {
       related: { title: "Who is going to read this anyway?", url: "https://medium.com/@j.akshaya1997/who-is-going-to-read-this-anyway-5116ecd69c73" },
     },
     {
-      id: "service-onboarding",
-      kind: "engineering",
-      title: "Service registry, self-service",
-      label: "PLATFORM / APPLIED AI",
-      context: "The registry that tells the platform how to call 800+ fulfillment services, and where workflow steps are added as configuration during the code-to-config migration below. Every change went through a developer on my team.",
-      problem: "Each registry change took a developer 3–4 hours of hand edits, and partial edits left orphaned records that caused about 10 operational incidents a month. Teams had no way to manage their own entries.",
-      hardCall: "Ship the self-service portal first, with transactional consistency across the three-level configuration hierarchy so a half-finished change cannot exist. The LLM tool that drafts an entry from existing documentation came second, as a tool for the team rather than a gate on the workflow.",
-      contribution: "Designed and built the portal end to end: backend APIs with full lifecycle management, the UI, and a reusable component architecture that cut code duplication 60% and future build time 30–40%. Built an LLM-assisted tool that parses service documentation into a draft entry.",
-      outcome: "3–4 hours of developer time became 3–4 minutes of self-service, the monthly incidents from orphaned records stopped, and the registry scales to 800+ services. The parsing tool drafts an entry from existing documentation in minutes.",
-      pattern: "Metadata-driven design · document parsing · self-service platform",
-    },
-    {
-      id: "root-cause-analysis",
-      kind: "engineering",
-      title: "Root-cause analysis as a workflow",
-      label: "APPLIED AI / OPERATIONS",
-      problem: "Every on-call rotation absorbed a steady stream of tickets, plus walk-up questions, that a quick search could have answered. Answering them meant correlating live system data with scattered technical knowledge.",
-      hardCall: "Answer from live system data, not documents alone. The assistant pairs the knowledge base with live API calls, so answers reflect current state.",
-      contribution: "Scoped and designed a secure operations assistant, and directed the intern who built it: live API data plus the team's technical knowledge base behind semantic search.",
-      outcome: "The goal was zero searchable-question tickets per rotation, and engineer hours back from walk-up questions. Production rollout was underway when I left in May 2026, so I have no measured result to report.",
-      pattern: "RAG · semantic search · secure operational tooling",
-    },
-    {
-      id: "legacy-modernization",
-      kind: "engineering",
-      title: "Modernizing a legacy broker component",
-      label: "SS&C EZE / FINANCIAL SOFTWARE",
-      problem: "A broker component built in Pascal/Delphi had to move to a modern web application inside a live trading environment.",
-      hardCall: "Vue or React for the new interface. I settled it with a proof of concept and chose React, betting on its longevity.",
-      contribution: "Migrated the Pascal/Delphi broker component to a modern web application, carrying existing trading functionality into the new interface.",
-      outcome: "The web version was 70% more responsive than the Delphi component, and development turnaround on it improved by 60%.",
-      pattern: "Legacy modernization · web applications · trading workflows",
-    },
-    {
       id: "code-to-config-migration",
       kind: "product",
       title: "Forty workflows, from code to configuration",
@@ -167,11 +131,18 @@ export const systemsWork = {
       context: "Every site-launch workflow was hand-written code. The platform was moving to a shared invocation layer that reads endpoints, request bodies, validations, and auto-fill rules from JSON configuration in a database, so a new workflow needs no new code.",
       problem: "About 40 workflows to move, owned by my team and by other teams. Users would not move until the platform could do everything their code did. Maintainers could not support configuration they had no tools to edit.",
       hardCall: "Treat it as a product, not a rewrite. Before asking anyone to migrate, find the gaps that would make them say no, build those first, and hand every team a manual they could follow without me in the room.",
-      contribution: "Researched what each migration would take and wrote the manuals: steps, dependencies, code changes, a checklist, and acceptance criteria. Catalogued every validation and auto-fill rule buried in workflow code so it could become configuration. Identified the features the platform was missing and built them: diff screens for change workflows, tagging each workflow as create, update, or delete so its effect on configuration is explicit, and the service registry portal above, where the configuration itself is added.",
-      outcome: "Five of about 40 workflows had migrated when I left, and the migration continues without me. That was the point of the manuals: a long migration that does not depend on the person who started it.",
+      contribution: "Researched what each migration would take and wrote the manuals: steps, dependencies, code changes, a checklist, and acceptance criteria. Catalogued every validation and auto-fill rule buried in workflow code so it could become configuration. Identified the features the platform was missing and built them: diff screens for change workflows, tagging each workflow as create, update, or delete so its effect on configuration is explicit, and the service registry portal where the configuration itself is added, which I built front to back.",
+      outcome: "The registry portal alone took a change from 3–4 hours of developer time to 3–4 minutes of self-service across 800+ services, and stopped the roughly 10 incidents a month that hand edits had caused. Five of about 40 workflows had migrated when I left, and the migration continues without me. That was the point of the manuals.",
       pattern: "Platform migration · requirements · enablement · self-service",
     },
   ] as CaseStudy[],
+  also: [
+    { title: "An AI assistant that got smaller on purpose", line: "We wanted something AI on the page. I wrote the requirements for a workflow assistant; they were too ambitious, so we scaled down to answering operators' questions from live system data. An intern built it under my direction; rollout was underway when I left." },
+    { title: "Full continuous deployment", line: "Wrote the acceptance criteria, then led 10 engineers through it: integration test coverage 5% → 95%, release waits 2 weeks → under a day." },
+    { title: "Site launches in the EU and Japan", line: "Rebuilt cross-region connectivity so last-mile site launches could leave North America: 31 EU sites live, 30% space savings, 15% throughput gain." },
+    { title: "Production-equivalent test environments", line: "10 test sites for last-mile services in 2024, aimed at the 46% of bad deployments that had been causing incidents." },
+    { title: "Pascal/Delphi to React, at SS&C", line: "Chose React over Vue after a proof of concept; the web version was 70% more responsive and development turnaround improved 60%." },
+  ],
 };
 
 export const leadership = {

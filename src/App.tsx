@@ -122,7 +122,7 @@ function Logo({ stop }: { stop: Experience }) {
 }
 
 function ExperienceTrackRecord() {
-  return <section id="experience" className="section track-record"><Eyebrow>Roles & responsibilities</Eyebrow><div className="track-list">{experience.stops.map(stop => <article className="track-card" key={stop.id}><div className="track-meta"><Logo stop={stop} /><span className="track-dates">{stop.dates}</span><strong>{stop.title}</strong><b>{stop.company}</b><small>{stop.city}</small></div><div className="track-content"><span className="track-kicker">ROLE FOCUS</span><h3>{stop.summary}</h3><p>{stop.owned}</p>{stop.id === "amazon-platforms" && <a className="role-work-link" href="#work">Read the case studies →</a>}{stop.id === "ssc-eze" && <a className="role-work-link" href="#legacy-modernization">Read the modernization case study →</a>}</div></article>)}</div></section>;
+  return <section id="experience" className="section track-record"><Eyebrow>Roles & responsibilities</Eyebrow><div className="track-list">{experience.stops.map(stop => <article className="track-card" key={stop.id}><div className="track-meta"><Logo stop={stop} /><span className="track-dates">{stop.dates}</span><strong>{stop.title}</strong><b>{stop.company}</b><small>{stop.city}</small></div><div className="track-content"><span className="track-kicker">ROLE FOCUS</span><h3>{stop.summary}</h3><p>{stop.owned}</p>{stop.id === "amazon-platforms" && <a className="role-work-link" href="#work">Read the case studies →</a>}</div></article>)}</div></section>;
 }
 
 function SystemsDomains() {
@@ -135,12 +135,7 @@ function CaseStudyCard({ card, index }: { card: CaseStudy; index: number }) {
 }
 
 function FeaturedCaseStudies() {
-  const groups: { kind: CaseStudy["kind"]; eyebrow: string; heading: string; sub: string }[] = [
-    { kind: "engineering", eyebrow: "Engineering", heading: "Systems I built", sub: "The constraint, the call I had to make, what I built, and what changed." },
-    { kind: "product", eyebrow: "Product", heading: "Initiatives I ran", sub: "Work where the hard part was research, requirements, and getting people to move, with the engineering in service of that." },
-  ];
-  let n = 0;
-  return <section id="work" className="section featured-case-studies"><Eyebrow>{systemsWork.chapter}</Eyebrow><h2>{systemsWork.title}</h2><p className="section-sub">{systemsWork.sub}</p>{groups.map(g => { const cards = systemsWork.cards.filter(c => c.kind === g.kind); if (!cards.length) return null; return <div className="case-group" key={g.kind} id={`work-${g.kind}`}><div className="case-group-head"><span className="case-label">{g.eyebrow}</span><h3>{g.heading}</h3><p>{g.sub}</p></div><div className="case-study-list">{cards.map(card => <CaseStudyCard card={card} index={n++} key={card.id} />)}</div></div>; })}</section>;
+  return <section id="work" className="section featured-case-studies"><Eyebrow>{systemsWork.chapter}</Eyebrow><h2>{systemsWork.title}</h2><p className="section-sub">{systemsWork.sub}</p><div className="case-study-list">{systemsWork.cards.map((card, i) => <CaseStudyCard card={card} index={i} key={card.id} />)}</div><div className="also"><span className="case-label">Also</span><ul className="also-list">{systemsWork.also.map(item => <li key={item.title}><strong>{item.title}</strong><span>{item.line}</span></li>)}</ul></div></section>;
 }
 
 function Leadership() {
