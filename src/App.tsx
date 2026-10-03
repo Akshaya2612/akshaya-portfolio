@@ -43,6 +43,12 @@ function useActiveSection() {
 }
 
 // ================= pieces =================
+// Case-study copy may mark emphasis with **double asterisks**; render those runs as <strong>.
+function Emph({ text }: { text: string }) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return <>{parts.map((part, i) => part.startsWith("**") && part.endsWith("**") ? <strong key={i}>{part.slice(2, -2)}</strong> : <span key={i}>{part}</span>)}</>;
+}
+
 function Eyebrow({ children }: { children: ReactNode }) {
   return <p className="eyebrow">{children}</p>;
 }
@@ -131,7 +137,7 @@ function SystemsDomains() {
 
 function CaseStudyCard({ card, index }: { card: CaseStudy; index: number }) {
   const i = index;
-  return <article className="case-study" id={card.id} key={card.id}><div className="case-study-index">0{i + 1}</div><div className="case-study-main"><p className="system-label">{card.label}</p><h3>{card.title}</h3>{card.context && <p className="case-study-context"><span className="case-label">TEAM CONTEXT</span>{card.context}</p>}<div className="case-study-columns"><div><span className="case-label">THE CONSTRAINT</span><p>{card.problem}</p></div><div className="case-study-hard-call"><span className="case-label">THE HARD CALL</span><p>{card.hardCall}</p></div><div><span className="case-label">MY CONTRIBUTION</span><p>{card.contribution}</p></div><div><span className="case-label">THE RESULT</span><p>{card.outcome}</p></div></div>{card.aside && <aside className="case-study-aside"><span className="case-label">{card.aside.label}</span><p>{card.aside.text}</p></aside>}{card.image && <figure className="case-study-figure"><img src={card.image.src} alt={card.image.alt} loading="lazy" /></figure>}<div className="case-tags">{card.pattern.split(" · ").map(tag => <span key={tag}>{tag}</span>)}</div>{card.related && <a className="role-work-link" href={card.related.url} target="_blank" rel="noreferrer">Read the write-up: {card.related.title} ↗</a>}</div></article>;
+  return <article className="case-study" id={card.id} key={card.id}><div className="case-study-index">0{i + 1}</div><div className="case-study-main"><p className="system-label">{card.label}</p><h3>{card.title}</h3>{card.context && <p className="case-study-context"><span className="case-label">TEAM CONTEXT</span><Emph text={card.context} /></p>}<div className="case-study-columns"><div><span className="case-label">THE CONSTRAINT</span><p><Emph text={card.problem} /></p></div><div className="case-study-hard-call"><span className="case-label">THE HARD CALL</span><p><Emph text={card.hardCall} /></p></div><div><span className="case-label">MY CONTRIBUTION</span><p><Emph text={card.contribution} /></p></div><div><span className="case-label">THE RESULT</span><p><Emph text={card.outcome} /></p></div></div>{card.aside && <aside className="case-study-aside"><span className="case-label">{card.aside.label}</span><p><Emph text={card.aside.text} /></p></aside>}{card.image && <figure className="case-study-figure"><img src={card.image.src} alt={card.image.alt} loading="lazy" /></figure>}<div className="case-tags">{card.pattern.split(" · ").map(tag => <span key={tag}>{tag}</span>)}</div>{card.related && <a className="role-work-link" href={card.related.url} target="_blank" rel="noreferrer">Read the write-up: {card.related.title} ↗</a>}</div></article>;
 }
 
 function FeaturedCaseStudies() {

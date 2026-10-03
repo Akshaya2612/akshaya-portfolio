@@ -489,3 +489,7 @@ section[id], footer[id], header[id] { scroll-margin-top: 4.5rem; }
 .also-list li { display: grid; gap: .2rem; }
 .also-list strong { font-size: .98rem; }
 .also-list span { color: var(--muted); font-size: .86rem; line-height: 1.5; }
+
+/* case-study emphasis */
+.case-study-columns strong, .case-study-context strong, .case-study-aside strong { color: var(--ink); font-weight: 600; }
+.case-study-hard-call p strong { color: var(--cyan); }
