@@ -286,6 +286,7 @@ export default function App() {
       <Nav />
       <main>
         <Hero />
+        <Terminal />
         <TechnicalProfile />
         <FeaturedCaseStudies />
         <SystemsDomains />
@@ -296,7 +297,6 @@ export default function App() {
         <Writing />
         <Story />
         <OffClock />
-        <Terminal />
       </main>
       <Contact />
     </>
