@@ -10,7 +10,7 @@ import amazonPhoto from "./images/amazon.jpg";
 import portrait from "./images/portrait.jpg";
 import {
   identity, story, writing, building, contact, offClock, technicalProfile,
-  experience, systemsWork, systemsDomains, leadership, stack, Post, Experience,
+  experience, systemsWork, systemsDomains, leadership, stack, Post, Experience, CaseStudy,
 } from "./data/content";
 
 // ================= tiny hash router for posts =================
@@ -129,8 +129,18 @@ function SystemsDomains() {
   return <section id="how-i-build" className="section principles"><Eyebrow>How I build</Eyebrow><h2>Four rules, with the numbers behind them.</h2><div className="principle-tiles">{systemsDomains.map(domain => <article className="principle-tile" key={domain.title}><div className="tile-stat"><strong>{domain.stat.value}</strong><span>{domain.stat.label}</span></div><h3>{domain.title}</h3><p>{domain.principle}</p><p className="tile-evidence">{domain.evidence.map((link, i) => <span key={link.href + link.label}>{i > 0 && " · "}<a href={link.href}>{link.label} →</a></span>)}</p></article>)}</div></section>;
 }
 
+function CaseStudyCard({ card, index }: { card: CaseStudy; index: number }) {
+  const i = index;
+  return <article className="case-study" id={card.id} key={card.id}><div className="case-study-index">0{i + 1}</div><div className="case-study-main"><p className="system-label">{card.label}</p><h3>{card.title}</h3>{card.context && <p className="case-study-context"><span className="case-label">TEAM CONTEXT</span>{card.context}</p>}<div className="case-study-columns"><div><span className="case-label">THE CONSTRAINT</span><p>{card.problem}</p></div><div className="case-study-hard-call"><span className="case-label">THE HARD CALL</span><p>{card.hardCall}</p></div><div><span className="case-label">MY CONTRIBUTION</span><p>{card.contribution}</p></div><div><span className="case-label">THE RESULT</span><p>{card.outcome}</p></div></div>{card.aside && <aside className="case-study-aside"><span className="case-label">{card.aside.label}</span><p>{card.aside.text}</p></aside>}{card.image && <figure className="case-study-figure"><img src={card.image.src} alt={card.image.alt} loading="lazy" /></figure>}<div className="case-tags">{card.pattern.split(" · ").map(tag => <span key={tag}>{tag}</span>)}</div>{card.related && <a className="role-work-link" href={card.related.url} target="_blank" rel="noreferrer">Read the write-up: {card.related.title} ↗</a>}</div></article>;
+}
+
 function FeaturedCaseStudies() {
-  return <section id="work" className="section featured-case-studies"><Eyebrow>{systemsWork.chapter}</Eyebrow><h2>{systemsWork.title}</h2><p className="section-sub">{systemsWork.sub}</p><div className="case-study-list">{systemsWork.cards.map((card, i) => <article className="case-study" id={card.id} key={card.id}><div className="case-study-index">0{i + 1}</div><div className="case-study-main"><p className="system-label">{card.label}</p><h3>{card.title}</h3>{card.context && <p className="case-study-context"><span className="case-label">TEAM CONTEXT</span>{card.context}</p>}<div className="case-study-columns"><div><span className="case-label">THE CONSTRAINT</span><p>{card.problem}</p></div><div className="case-study-hard-call"><span className="case-label">THE HARD CALL</span><p>{card.hardCall}</p></div><div><span className="case-label">MY CONTRIBUTION</span><p>{card.contribution}</p></div><div><span className="case-label">THE RESULT</span><p>{card.outcome}</p></div></div>{card.aside && <aside className="case-study-aside"><span className="case-label">{card.aside.label}</span><p>{card.aside.text}</p></aside>}{card.image && <figure className="case-study-figure"><img src={card.image.src} alt={card.image.alt} loading="lazy" /></figure>}<div className="case-tags">{card.pattern.split(" · ").map(tag => <span key={tag}>{tag}</span>)}</div>{card.related && <a className="role-work-link" href={card.related.url} target="_blank" rel="noreferrer">Read the write-up: {card.related.title} ↗</a>}</div></article>)}</div></section>;
+  const groups: { kind: CaseStudy["kind"]; eyebrow: string; heading: string; sub: string }[] = [
+    { kind: "engineering", eyebrow: "Engineering", heading: "Systems I built", sub: "The constraint, the call I had to make, what I built, and what changed." },
+    { kind: "product", eyebrow: "Product", heading: "Initiatives I ran", sub: "Work where the hard part was research, requirements, and getting people to move, with the engineering in service of that." },
+  ];
+  let n = 0;
+  return <section id="work" className="section featured-case-studies"><Eyebrow>{systemsWork.chapter}</Eyebrow><h2>{systemsWork.title}</h2><p className="section-sub">{systemsWork.sub}</p>{groups.map(g => { const cards = systemsWork.cards.filter(c => c.kind === g.kind); if (!cards.length) return null; return <div className="case-group" key={g.kind} id={`work-${g.kind}`}><div className="case-group-head"><span className="case-label">{g.eyebrow}</span><h3>{g.heading}</h3><p>{g.sub}</p></div><div className="case-study-list">{cards.map(card => <CaseStudyCard card={card} index={n++} key={card.id} />)}</div></div>; })}</section>;
 }
 
 function Leadership() {

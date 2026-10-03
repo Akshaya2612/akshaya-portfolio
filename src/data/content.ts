@@ -77,6 +77,7 @@ export const systemsDomains: SystemsDomain[] = [
 
 export type CaseStudy = {
   id: string;
+  kind: "engineering" | "product"; // product = the initiative was mostly research, requirements, and getting people to move
   title: string;
   label: string;
   context?: string;
@@ -97,6 +98,7 @@ export const systemsWork = {
   cards: [
     {
       id: "configuration-platform",
+      kind: "engineering",
       title: "Configuration as a platform",
       label: "AMAZON / FULFILLMENT PLATFORM",
       context: "Part of a program to take the manual configuration out of fulfillment-center launches across 51 Amazon Fulfillment Technologies (AFT) services. I owned the 13 that use pod-based load balancing.",
@@ -110,6 +112,7 @@ export const systemsWork = {
     },
     {
       id: "governance",
+      kind: "engineering",
       title: "Governance built into the path",
       label: "AMAZON / RELIABILITY / PLATFORM",
       context: "The second maker-checker system: a self-service workflow engine for configuration changes that downstream systems depend on. It started with launches and reconfiguration for Amazon's Quick Commerce nodes and address changes for fulfillment centers.",
@@ -124,9 +127,10 @@ export const systemsWork = {
     },
     {
       id: "service-onboarding",
+      kind: "engineering",
       title: "Service registry, self-service",
       label: "PLATFORM / APPLIED AI",
-      context: "The registry that 800+ fulfillment services depend on for how they are called. Every change went through a developer on my team.",
+      context: "The registry that tells the platform how to call 800+ fulfillment services, and where workflow steps are added as configuration during the code-to-config migration below. Every change went through a developer on my team.",
       problem: "Each registry change took a developer 3–4 hours of hand edits, and partial edits left orphaned records that caused about 10 operational incidents a month. Teams had no way to manage their own entries.",
       hardCall: "Ship the self-service portal first, with transactional consistency across the three-level configuration hierarchy so a half-finished change cannot exist. The LLM tool that drafts an entry from existing documentation came second, as a tool for the team rather than a gate on the workflow.",
       contribution: "Designed and built the portal end to end: backend APIs with full lifecycle management, the UI, and a reusable component architecture that cut code duplication 60% and future build time 30–40%. Built an LLM-assisted tool that parses service documentation into a draft entry.",
@@ -135,6 +139,7 @@ export const systemsWork = {
     },
     {
       id: "root-cause-analysis",
+      kind: "engineering",
       title: "Root-cause analysis as a workflow",
       label: "APPLIED AI / OPERATIONS",
       problem: "Every on-call rotation absorbed a steady stream of tickets, plus walk-up questions, that a quick search could have answered. Answering them meant correlating live system data with scattered technical knowledge.",
@@ -145,6 +150,7 @@ export const systemsWork = {
     },
     {
       id: "legacy-modernization",
+      kind: "engineering",
       title: "Modernizing a legacy broker component",
       label: "SS&C EZE / FINANCIAL SOFTWARE",
       problem: "A broker component built in Pascal/Delphi had to move to a modern web application inside a live trading environment.",
@@ -152,6 +158,18 @@ export const systemsWork = {
       contribution: "Migrated the Pascal/Delphi broker component to a modern web application, carrying existing trading functionality into the new interface.",
       outcome: "The web version was 70% more responsive than the Delphi component, and development turnaround on it improved by 60%.",
       pattern: "Legacy modernization · web applications · trading workflows",
+    },
+    {
+      id: "code-to-config-migration",
+      kind: "product",
+      title: "Forty workflows, from code to configuration",
+      label: "AMAZON / PLATFORM MIGRATION",
+      context: "Every site-launch workflow was hand-written code. The platform was moving to a shared invocation layer that reads endpoints, request bodies, validations, and auto-fill rules from JSON configuration in a database, so a new workflow needs no new code.",
+      problem: "About 40 workflows to move, owned by my team and by other teams. Users would not move until the platform could do everything their code did. Maintainers could not support configuration they had no tools to edit.",
+      hardCall: "Treat it as a product, not a rewrite. Before asking anyone to migrate, find the gaps that would make them say no, build those first, and hand every team a manual they could follow without me in the room.",
+      contribution: "Researched what each migration would take and wrote the manuals: steps, dependencies, code changes, a checklist, and acceptance criteria. Catalogued every validation and auto-fill rule buried in workflow code so it could become configuration. Identified the features the platform was missing and built them: diff screens for change workflows, tagging each workflow as create, update, or delete so its effect on configuration is explicit, and the service registry portal above, where the configuration itself is added.",
+      outcome: "Five of about 40 workflows had migrated when I left, and the migration continues without me. That was the point of the manuals: a long migration that does not depend on the person who started it.",
+      pattern: "Platform migration · requirements · enablement · self-service",
     },
   ] as CaseStudy[],
 };
